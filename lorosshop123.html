@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace - Venta de Productos</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #edfaf2;
+        }
+        header {
+            background-color: #4ec179;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            position: relative;
+        }
+        .cart-icon {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .cart-count {
+            background-color: red;
+            border-radius: 50%;
+            padding: 4px 8px;
+            color: white;
+            font-size: 14px;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        #offer-bar {
+            background-color: #87f915;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 2em;
+        }
+        .product {
+            background-color: white;
+            padding: 1em;
+            margin: 1em;
+            width: 250px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+            border-radius: 10px;
+        }
+        .modal img {
+            width: 200px;
+            margin: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Carrito de compras */
+        .cart {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            right: 0;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+        }
+        #cart-items {
+            margin-bottom: 20px;
+        }
+        #cart-items p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #cart-total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        #checkout-btn {
+            background-color: #28a745;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #checkout-btn:hover {
+            background-color: #218838;
+        }
+        #clear-cart-btn {
+            background-color: #dc3545;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #clear-cart-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Marketplace - Lorosshop.com</h1>
+        <div class="cart-icon" onclick="openCart()">
+            🛒<span id="cart-count" class="cart-count">0</span>
+        </div>
+    </header>
+
+    <div id="offer-bar" onclick="openOfferModal()">
+        ¡Oferta Relámpago!   >
+    </div>
+
+    <main>
+        <section id="products">
+            <!-- Producto 1 -->
+            <div class="product">
+                <img src="images\A1.jpg" alt="producto 1" onclick="openProductModal('Bolso Negro Clásico y Versátil', 'Este bolso negro es la elección perfecta para quienes buscan elegancia y funcionalidad en un solo accesorio.', ['images/A1_1.jpg', 'images/A1_2.jpg', 'images/A1_3.jpg'])">
+                <h3>Bolso Negro Clásico y Versátil Ref 001</h3>
+                <p>Precio: $80,000</p>
+                <button onclick="addToCart('Ref001 Bolso Negro Clásico y Versátil', 80000)">Añadir al carrito</button>
+            </div>
+            <!-- Producto 2 -->
+            <div class="product">
+                <img src="images\A2.jpg" alt="Producto 2" onclick="openProductModal('Reloj Negro Elegante y Versátil', ' Su diseño minimalista .', ['images/A2_1.jpg', 'images/A2_2.jpg', 'images/A2_3.jpg'])">
+                <h3>Reloj Hombre Ref 002</h3>
+                <p>Precio: $50,000</p>
+                <button onclick="addToCart('Ref002 Reloj Hombre', 50000)">Añadir al carrito</button>
+            </div>
+            <!-- Producto 3 -->
+            <div class="product">
+                <img src="images\A3.jpg" alt="Producto 3" onclick="openProductModal('Producto 3', ' Su diseño minimalista .', ['images/A3_1.jpg', 'images/A3_2.jpg', 'images/A3_3.jpg'])">
+                <h3>Reloj Hombre Ref 003</h3>
+                <p>Precio: $40,000</p>
+                <button onclick="addToCart('Ref003 Reloj Hombre', 40000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 4 -->
+            <div class="product">
+                <img src="images\A4.jpg" alt="Producto 3" onclick="openProductModal('Super Reloj Black', 'Reloj Deportivo Negro Mate .', ['images/A4_1.jpg', 'images/A4_2.jpg', 'images/A4_3.jpg'])">
+                <h3>Super Reloj Balck Ref 004</h3>
+                <p>Precio: $20,000</p>
+                <button onclick="addToCart('Ref004Super Reloj Black', 20000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 5 -->
+            <div class="product">
+                <img src="images\A5.jpg" alt="Producto 3" onclick="openProductModal('Reloj Masculino', 'Reloj Masculino Con Correa En Cuerina Color Cafe Madera .', ['images/A5_1.jpg', 'images/A5_2.jpg', 'images/A5_3.jpg'])">
+                <h3>Reloj Masculino Ref005 </h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref 005 Reloj Masculino', 65000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 6 -->
+            <div class="product">
+                <img src="images\A6.jpg" alt="Producto 3" onclick="openProductModal('Bolso MultiColor', 'Bolso Formal Eh Informal', ['images/A6_1.jpg', 'images/A6_2.jpg', 'images/A6_3.jpg'])">
+                <h3>Bolso MultiColor Ref 006</h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref006 Bolso MultiColor', 35000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 7 -->
+            <div class="product">
+                <img src="images\A7.jpg" alt="Fundas De Celular" onclick="openProductModal('Fundas De Celular', 'Fundas Iphon Femeninos Recistentes A Los Golpes', ['images/A7_1.jpg', 'images/A7_2.jpg', 'images/A7_3.jpg'])">
+                <h3> Fundas Celular Ref 007</h3>
+                <p>Precio: $30,000</p>
+                <button onclick="addToCart('Ref007 Fundas Iphone', 30000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 8 -->
+            <div class="product">
+                <img src="images\A8.jpg" alt="Producto 3" onclick="openProductModal('Pulseras Elegantes', 'Elegantes Pulceras  Doradas En Acero Inoxidable ', ['images/A8_1.jpg', 'images/A8_2.jpg', 'images/A8_3.jpg'])">
+                <h3>Pulcera Dorada Ref 008</h3>
+                <p>Precio: $20,000</p>
+                <button onclick="addToCart('Ref008Pulseras Elegantes', 20000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 9 -->
+            <div class="product">
+                <img src="images\A9.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A9_1.jpg', 'images/A9_2.jpg', 'images/A9_3.jpg'])">
+                <h3>Bolso Enlonado Ref 009</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref009 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+   <!-- Producto 10 -->
+            <div class="product">
+                <img src="images\A10.jpg" alt="producto 1" onclick="openProductModal('Bolso Negro Clásico y Versátil', 'Este bolso negro es la elección perfecta para quienes buscan elegancia y funcionalidad en un solo accesorio.', ['images/A10_1.jpg', 'images/A10_2.jpg', 'images/A10_3.jpg'])">
+                <h3>Bolso Negro Clásico y Versátil Ref 010</h3>
+                <p>Precio: $80,000</p>
+                <button onclick="addToCart('Ref010 Bolso Negro Clásico y Versátil', 80000)">Añadir al carrito</button>
+            </div>
+            <!-- Producto 11 -->
+            <div class="product">
+                <img src="images\A11.jpg" alt="Producto 2" onclick="openProductModal('Reloj Negro Elegante y Versátil', 'Este reloj negro es la combinación perfecta entre estilo y funcionalidad. Su diseño minimalista y sofisticado lo convierte en el accesorio ideal para cualquier ocasión.', ['images/A11_1.jpg', 'images/A11_2.jpg', 'images/A11_3.jpg'])">
+                <h3>Reloj Hombre Ref 011</h3>
+                <p>Precio: $50,000</p>
+                <button onclick="addToCart('Ref011 Reloj Hombre', 50000)">Añadir al carrito</button>
+            </div>
+            <!-- Producto 12 -->
+            <div class="product">
+                <img src="images\A12.jpg" alt="Producto 3" onclick="openProductModal('Producto 3', 'Descripción del producto 3', ['images/A12_1.jpg', 'images/A12_2.jpg', 'images/A12_3.jpg'])">
+                <h3>Reloj Hombre Ref 012</h3>
+                <p>Precio: $40,000</p>
+                <button onclick="addToCart('Ref012 Reloj Hombre', 40000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 13 -->
+            <div class="product">
+                <img src="images\A13.jpg" alt="Producto 3" onclick="openProductModal('Super Reloj Black', 'Reloj Deportivo Negro Mate', ['images/A13_1.jpg', 'images/A13_2.jpg', 'images/A13_3.jpg'])">
+                <h3>Super Reloj Balck Ref 013</h3>
+                <p>Precio: $20,000</p>
+                <button onclick="addToCart('Ref013 Super Reloj Black', 20000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 14 -->
+            <div class="product">
+                <img src="images\A14.jpg" alt="Producto 3" onclick="openProductModal('Reloj Masculino', 'Reloj Masculino Con Correa En Cuerina Color Cafe Madera ', ['images/A14_1.jpg', 'images/A14_2.jpg', 'images/A14_3.jpg'])">
+                <h3>Reloj Masculino Ref 014 </h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref 014 Reloj Masculino', 65000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 15 -->
+            <div class="product">
+                <img src="images\A15.jpg" alt="Producto 3" onclick="openProductModal('Bolso MultiColor', 'Bolso Formal Eh Informal', ['images/A15_1.jpg', 'images/A15_2.jpg', 'images/A15_3.jpg'])">
+                <h3>Bolso MultiColor Ref 015</h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref015 Bolso MultiColor', 35000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 16 -->
+            <div class="product">
+                <img src="images\A16.jpg" alt="Fundas De Celular" onclick="openProductModal('Fundas De Celular', 'Fundas Iphon Femeninos Recistentes A Los Golpes', ['images/A16_1.jpg', 'images/A16_2.jpg', 'images/A16_3.jpg'])">
+                <h3> Fundas Celular Ref 016</h3>
+                <p>Precio: $30,000</p>
+                <button onclick="addToCart('Ref016 Fundas Iphone', 30000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 17 -->
+            <div class="product">
+                <img src="images\A17.jpg" alt="Producto 3" onclick="openProductModal('Pulseras Elegantes', 'Elegantes Pulceras  Doradas En Acero Inoxidable ', ['images/A17_1.jpg', 'images/A17_2.jpg', 'images/A17_3.jpg'])">
+                <h3>Pulcera Dorada Ref 017</h3>
+                <p>Precio: $20,000</p>
+                <button onclick="addToCart('Ref017 Pulseras Elegantes', 20000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 18-->
+            <div class="product">
+                <img src="images\A18.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A18_1.jpg', 'images/A18_2.jpg', 'images/A18_3.jpg'])">
+                <h3>Bolso Enlonado Ref 018</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref018 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+ 
+<!-- Producto 19-->
+            <div class="product">
+                <img src="images\A19.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A19_1.jpg', 'images/A19_2.jpg', 'images/A19_3.jpg'])">
+                <h3>Bolso Enlonado Ref 019</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref019 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 20-->
+            <div class="product">
+                <img src="images\A20.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A20_1.jpg', 'images/A20_2.jpg', 'images/A20_3.jpg'])">
+                <h3>Bolso Enlonado Ref 020</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref020 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 21-->
+            <div class="product">
+                <img src="images\A21.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A21_1.jpg', 'images/A21_2.jpg', 'images/A21_3.jpg'])">
+                <h3>Bolso Enlonado Ref 021</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref021 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 22-->
+            <div class="product">
+                <img src="images\A22.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A22_1.jpg', 'images/A22_2.jpg', 'images/A22_3.jpg'])">
+                <h3>Bolso Enlonado Ref 022</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref022 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 23-->
+            <div class="product">
+                <img src="images\A23.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A23_1.jpg', 'images/A23_2.jpg', 'images/A23_3.jpg'])">
+                <h3>Bolso Enlonado Ref 023</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref023 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 24-->
+            <div class="product">
+                <img src="images\A24.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A24_1.jpg', 'images/A24_2.jpg', 'images/A24_3.jpg'])">
+                <h3>Bolso Enlonado Ref 024</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref024 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 25-->
+            <div class="product">
+                <img src="images\A25.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A25_1.jpg', 'images/A25_2.jpg', 'images/A25_3.jpg'])">
+                <h3>Bolso Enlonado Ref 025</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref025 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 26-->
+            <div class="product">
+                <img src="images\A26.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A26_1.jpg', 'images/A26_2.jpg', 'images/A26_3.jpg'])">
+                <h3>Bolso Enlonado Ref 026</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref026 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 27-->
+            <div class="product">
+                <img src="images\A27.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A27_1.jpg', 'images/A27_2.jpg', 'images/A27_3.jpg'])">
+                <h3>Bolso Enlonado Ref 027</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref027 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 28-->
+            <div class="product">
+                <img src="images\A28.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A28_1.jpg', 'images/A28_2.jpg', 'images/A28_3.jpg'])">
+                <h3>Bolso Enlonado Ref 028</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref028 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 29-->
+            <div class="product">
+                <img src="images\A29.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A29_1.jpg', 'images/A29_2.jpg', 'images/A29_3.jpg'])">
+                <h3>Bolso Enlonado Ref 029</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref029 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 30-->
+            <div class="product">
+                <img src="images\A30.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A30_1.jpg', 'images/A30_2.jpg', 'images/A30_3.jpg'])">
+                <h3>Bolso Enlonado Ref 030</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref030 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 31-->
+            <div class="product">
+                <img src="images\A31.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A31_1.jpg', 'images/A31_2.jpg', 'images/A31_3.jpg'])">
+                <h3>Bolso Enlonado Ref 031</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref031 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 32-->
+            <div class="product">
+                <img src="images\A32.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A32_1.jpg', 'images/A32_2.jpg', 'images/A32_3.jpg'])">
+                <h3>Bolso Enlonado Ref 032</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref032 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 33-->
+            <div class="product">
+                <img src="images\A33.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A33_1.jpg', 'images/A33_2.jpg', 'images/A33_3.jpg'])">
+                <h3>Bolso Enlonado Ref 033</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref033 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 34-->
+            <div class="product">
+                <img src="images\A34.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A34_1.jpg', 'images/A34_2.jpg', 'images/A34_3.jpg'])">
+                <h3>Bolso Enlonado Ref 034</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref034 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 35-->
+            <div class="product">
+                <img src="images\A35.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A35_1.jpg', 'images/A35_2.jpg', 'images/A35_3.jpg'])">
+                <h3>Bolso Enlonado Ref 035</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref035 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 36-->
+            <div class="product">
+                <img src="images\A36.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A36_1.jpg', 'images/A36_2.jpg', 'images/A36_3.jpg'])">
+                <h3>Bolso Enlonado Ref 036</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref036 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 37-->
+            <div class="product">
+                <img src="images\A37.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A37_1.jpg', 'images/A37_2.jpg', 'images/A37_3.jpg'])">
+                <h3>Bolso Enlonado Ref 037</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref037 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 38-->
+            <div class="product">
+                <img src="images\A38.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A38_1.jpg', 'images/A38_2.jpg', 'images/A38_3.jpg'])">
+                <h3>Bolso Enlonado Ref 038</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref038 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 39-->
+            <div class="product">
+                <img src="images\A39.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A39_1.jpg', 'images/A39_2.jpg', 'images/A39_3.jpg'])">
+                <h3>Bolso Enlonado Ref 039</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref039 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 40-->
+            <div class="product">
+                <img src="images\A40.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A40_1.jpg', 'images/A40_2.jpg', 'images/A40_3.jpg'])">
+                <h3>Bolso Enlonado Ref 040</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref040 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 41-->
+            <div class="product">
+                <img src="images\A41.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A41_1.jpg', 'images/A41_2.jpg', 'images/A41_3.jpg'])">
+                <h3>Bolso Enlonado Ref 041</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref041 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 42-->
+            <div class="product">
+                <img src="images\A42.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A42_1.jpg', 'images/A42_2.jpg', 'images/A42_3.jpg'])">
+                <h3>Bolso Enlonado Ref 042</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref42 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 43-->
+            <div class="product">
+                <img src="images\A43.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A43_1.jpg', 'images/A43_2.jpg', 'images/A43_3.jpg'])">
+                <h3>Bolso Enlonado Ref 043</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref043 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 44-->
+            <div class="product">
+                <img src="images\A44.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A44_1.jpg', 'images/A44_2.jpg', 'images/A44_3.jpg'])">
+                <h3>Bolso Enlonado Ref 044</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref044 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 45-->
+            <div class="product">
+                <img src="images\A45.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A45_1.jpg', 'images/A45_2.jpg', 'images/A45_3.jpg'])">
+                <h3>Bolso Enlonado Ref 045</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref045 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 46-->
+            <div class="product">
+                <img src="images\A46.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A46_1.jpg', 'images/A46_2.jpg', 'images/A46_3.jpg'])">
+                <h3>Bolso Enlonado Ref 046</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref046 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 47-->
+            <div class="product">
+                <img src="images\A47.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A47_1.jpg', 'images/A47_2.jpg', 'images/A47_3.jpg'])">
+                <h3>Bolso Enlonado Ref 047</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref047 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 48-->
+            <div class="product">
+                <img src="images\A48.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A48_1.jpg', 'images/A48_2.jpg', 'images/A48_3.jpg'])">
+                <h3>Bolso Enlonado Ref 048</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref048 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 49-->
+            <div class="product">
+                <img src="images\A49.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A49_1.jpg', 'images/A49_2.jpg', 'images/A49_3.jpg'])">
+                <h3>Bolso Enlonado Ref 049</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref049 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 50-->
+            <div class="product">
+                <img src="images\A50.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A50_1.jpg', 'images/A50_2.jpg', 'images/A50_3.jpg'])">
+                <h3>Bolso Enlonado Ref 050</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref050 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 51-->
+            <div class="product">
+                <img src="images\A51.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A51_1.jpg', 'images/A51_2.jpg', 'images/A51_3.jpg'])">
+                <h3>Bolso Enlonado Ref 051</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref051 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 52-->
+            <div class="product">
+                <img src="images\A52.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A52_1.jpg', 'images/A52_2.jpg', 'images/A52_3.jpg'])">
+                <h3>Bolso Enlonado Ref 052</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref052 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 53-->
+            <div class="product">
+                <img src="images\A53.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A53_1.jpg', 'images/A53_2.jpg', 'images/A53_3.jpg'])">
+                <h3>Bolso Enlonado Ref 053</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref053 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 54-->
+            <div class="product">
+                <img src="images\A54.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A54_1.jpg', 'images/A54_2.jpg', 'images/A54_3.jpg'])">
+                <h3>Bolso Enlonado Ref 054</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref054 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 55-->
+            <div class="product">
+                <img src="images\A55.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A55_1.jpg', 'images/A55_2.jpg', 'images/A55_3.jpg'])">
+                <h3>Bolso Enlonado Ref 055</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref055 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 56-->
+            <div class="product">
+                <img src="images\A56.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A56_1.jpg', 'images/A56_2.jpg', 'images/A56_3.jpg'])">
+                <h3>Bolso Enlonado Ref 056</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref056 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 57-->
+            <div class="product">
+                <img src="images\A57.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A57_1.jpg', 'images/A57_2.jpg', 'images/A57_3.jpg'])">
+                <h3>Bolso Enlonado Ref 057</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref057 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 58-->
+            <div class="product">
+                <img src="images\A58.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A58_1.jpg', 'images/A58_2.jpg', 'images/A58_3.jpg'])">
+                <h3>Bolso Enlonado Ref 058</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref058 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 59-->
+            <div class="product">
+                <img src="images\A59.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A59_1.jpg', 'images/A59_2.jpg', 'images/A59_3.jpg'])">
+                <h3>Bolso Enlonado Ref 059</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref059 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 60-->
+            <div class="product">
+                <img src="images\A60.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A60_1.jpg', 'images/A60_2.jpg', 'images/A60_3.jpg'])">
+                <h3>Bolso Enlonado Ref 060</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref060 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 61-->
+            <div class="product">
+                <img src="images\A61.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A61_1.jpg', 'images/A61_2.jpg', 'images/A61_3.jpg'])">
+                <h3>Bolso Enlonado Ref 061</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref061 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 62-->
+            <div class="product">
+                <img src="images\A62.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A62_1.jpg', 'images/A62_2.jpg', 'images/A62_3.jpg'])">
+                <h3>Bolso Enlonado Ref 062</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref062 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 63-->
+            <div class="product">
+                <img src="images\A63.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A63_1.jpg', 'images/A63_2.jpg', 'images/A63_3.jpg'])">
+                <h3>Bolso Enlonado Ref 063</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref063 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 64-->
+            <div class="product">
+                <img src="images\A64.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A64_1.jpg', 'images/A64_2.jpg', 'images/A64_3.jpg'])">
+                <h3>Bolso Enlonado Ref 064</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref064 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 65-->
+            <div class="product">
+                <img src="images\A65.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A65_1.jpg', 'images/A65_2.jpg', 'images/A65_3.jpg'])">
+                <h3>Bolso Enlonado Ref 065</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref065 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 66-->
+            <div class="product">
+                <img src="images\A66.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A66_1.jpg', 'images/A66_2.jpg', 'images/A66_3.jpg'])">
+                <h3>Bolso Enlonado Ref 066</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref066 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 67-->
+            <div class="product">
+                <img src="images\A67.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A67_1.jpg', 'images/A67_2.jpg', 'images/A67_3.jpg'])">
+                <h3>Bolso Enlonado Ref 067</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref067 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 68-->
+            <div class="product">
+                <img src="images\A68.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A68_1.jpg', 'images/A68_2.jpg', 'images/A68_3.jpg'])">
+                <h3>Bolso Enlonado Ref 068</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref068 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 69-->
+            <div class="product">
+                <img src="images\A69.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A69_1.jpg', 'images/A69_2.jpg', 'images/A69_3.jpg'])">
+                <h3>Bolso Enlonado Ref 069</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref069 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 70-->
+            <div class="product">
+                <img src="images\A70.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A70_1.jpg', 'images/A70_2.jpg', 'images/A70_3.jpg'])">
+                <h3>Bolso Enlonado Ref 070</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref070 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 71-->
+            <div class="product">
+                <img src="images\A71.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A71_1.jpg', 'images/A71_2.jpg', 'images/A71_3.jpg'])">
+                <h3>Bolso Enlonado Ref 071</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref071 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 72-->
+            <div class="product">
+                <img src="images\A72.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A72_1.jpg', 'images/A72_2.jpg', 'images/A72_3.jpg'])">
+                <h3>Bolso Enlonado Ref 072</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref072 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 73-->
+            <div class="product">
+                <img src="images\A73.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A73_1.jpg', 'images/A73_2.jpg', 'images/A73_3.jpg'])">
+                <h3>Bolso Enlonado Ref 073</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref073 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 74-->
+            <div class="product">
+                <img src="images\A74.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A74_1.jpg', 'images/A74_2.jpg', 'images/A74_3.jpg'])">
+                <h3>Bolso Enlonado Ref 074</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref074 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 75-->
+            <div class="product">
+                <img src="images\A75.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A75_1.jpg', 'images/A75_2.jpg', 'images/A75_3.jpg'])">
+                <h3>Bolso Enlonado Ref 075</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref075 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 76-->
+            <div class="product">
+                <img src="images\A76.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A76_1.jpg', 'images/A76_2.jpg', 'images/A76_3.jpg'])">
+                <h3>Bolso Enlonado Ref 076</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref076 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 77-->
+            <div class="product">
+                <img src="images\A77.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A77_1.jpg', 'images/A77_2.jpg', 'images/A77_3.jpg'])">
+                <h3>Bolso Enlonado Ref 077</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref077 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 78-->
+            <div class="product">
+                <img src="images\A78.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A78_1.jpg', 'images/A78_2.jpg', 'images/A78_3.jpg'])">
+                <h3>Bolso Enlonado Ref 078</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref078 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 79-->
+            <div class="product">
+                <img src="images\A79.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A79_1.jpg', 'images/A79_2.jpg', 'images/A79_3.jpg'])">
+                <h3>Bolso Enlonado Ref 079</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref079 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 80-->
+            <div class="product">
+                <img src="images\A80.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A80_1.jpg', 'images/A80_2.jpg', 'images/A80_3.jpg'])">
+                <h3>Bolso Enlonado Ref 080</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref080 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 81-->
+            <div class="product">
+                <img src="images\A81.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A81.jpg', 'images/A81_2.jpg', 'images/A81_3.jpg'])">
+                <h3>Bolso Enlonado Ref 081</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref081 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 82-->
+            <div class="product">
+                <img src="images\A82.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A82_1.jpg', 'images/A82_2.jpg', 'images/A82_3.jpg'])">
+                <h3>Bolso Enlonado Ref 082</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref082 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 83-->
+            <div class="product">
+                <img src="images\A83.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A83_1.jpg', 'images/A83_2.jpg', 'images/A83_3.jpg'])">
+                <h3>Bolso Enlonado Ref 083</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref083 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 84-->
+            <div class="product">
+                <img src="images\A84.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A84_1.jpg', 'images/A84_2.jpg', 'images/A84_3.jpg'])">
+                <h3>Bolso Enlonado Ref 084</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref084 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 85-->
+            <div class="product">
+                <img src="images\A85.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A85_1.jpg', 'images/A85_2.jpg', 'images/A85_3.jpg'])">
+                <h3>Bolso Enlonado Ref 085</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref085 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 86-->
+            <div class="product">
+                <img src="images\A86.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A86_1.jpg', 'images/A86_2.jpg', 'images/A86_3.jpg'])">
+                <h3>Bolso Enlonado Ref 086</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref086 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 87-->
+            <div class="product">
+                <img src="images\A87.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A87_1.jpg', 'images/A87_2.jpg', 'images/A87_3.jpg'])">
+                <h3>Bolso Enlonado Ref 087</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref087 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 88-->
+            <div class="product">
+                <img src="images\A88.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A88_1.jpg', 'images/A88_2.jpg', 'images/A88_3.jpg'])">
+                <h3>Bolso Enlonado Ref 088</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref088 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 89-->
+            <div class="product">
+                <img src="images\A89.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A89_1.jpg', 'images/A89_2.jpg', 'images/A89_3.jpg'])">
+                <h3>Bolso Enlonado Ref 089</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref089 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 90-->
+            <div class="product">
+                <img src="images\A90.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A90_1.jpg', 'images/A90_2.jpg', 'images/A90_3.jpg'])">
+                <h3>Bolso Enlonado Ref 090</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref090 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 91-->
+            <div class="product">
+                <img src="images\A91.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A91_1.jpg', 'images/A91_2.jpg', 'images/A91_3.jpg'])">
+                <h3>Bolso Enlonado Ref 091</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref91 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 92-->
+            <div class="product">
+                <img src="images\A92.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A92_1.jpg', 'images/A92_2.jpg', 'images/A92_3.jpg'])">
+                <h3>Bolso Enlonado Ref 092</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref092 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 93-->
+            <div class="product">
+                <img src="images\A93.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A93_1.jpg', 'images/A93_2.jpg', 'images/A93_3.jpg'])">
+                <h3>Bolso Enlonado Ref 093</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref093 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 94-->
+            <div class="product">
+                <img src="images\A94.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A94_1.jpg', 'images/A94_2.jpg', 'images/A94_3.jpg'])">
+                <h3>Bolso Enlonado Ref 094</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref094 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 95-->
+            <div class="product">
+                <img src="images\A95.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A95_1.jpg', 'images/A95_2.jpg', 'images/A95_3.jpg'])">
+                <h3>Bolso Enlonado Ref 095</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref095 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 96-->
+            <div class="product">
+                <img src="images\A96.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A96_1.jpg', 'images/A96_2.jpg', 'images/A96_3.jpg'])">
+                <h3>Bolso Enlonado Ref 096</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref096 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 97-->
+            <div class="product">
+                <img src="images\A97.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A97_1.jpg', 'images/A97_2.jpg', 'images/A97_3.jpg'])">
+                <h3>Bolso Enlonado Ref 097</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref097 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 98-->
+            <div class="product">
+                <img src="images\A98.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A98_1.jpg', 'images/A98_2.jpg', 'images/A98_3.jpg'])">
+                <h3>Bolso Enlonado Ref 098</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref098 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 99-->
+            <div class="product">
+                <img src="images\A99.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A99_1.jpg', 'images/A99_2.jpg', 'images/A99_3.jpg'])">
+                <h3>Bolso Enlonado Ref 099</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref099 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 100-->
+            <div class="product">
+                <img src="images\A100.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A100_1.jpg', 'images/A100_2.jpg', 'images/A100_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0100</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0100 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 101-->
+            <div class="product">
+                <img src="images\A101.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A101_1.jpg', 'images/A101_2.jpg', 'images/A101_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0101</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0101 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 102-->
+            <div class="product">
+                <img src="images\A102.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A102_1.jpg', 'images/A102_2.jpg', 'images/A102_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0102</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0102 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 103-->
+            <div class="product">
+                <img src="images\A103.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A103_1.jpg', 'images/A103_2.jpg', 'images/A103_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0103</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0103 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 104-->
+            <div class="product">
+                <img src="images\A104.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A104_1.jpg', 'images/A104_2.jpg', 'images/A104_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0104</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0104 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 105-->
+            <div class="product">
+                <img src="images\A105.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A105_1.jpg', 'images/A105_2.jpg', 'images/A105_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0105</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0105 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 106-->
+            <div class="product">
+                <img src="images\A106.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A106_1.jpg', 'images/A106_2.jpg', 'images/A106_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0106</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0106 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 107-->
+            <div class="product">
+                <img src="images\A107.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A107_1.jpg', 'images/A107_2.jpg', 'images/A107_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0107</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0107 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 108-->
+            <div class="product">
+                <img src="images\A108.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A108_1.jpg', 'images/A108_2.jpg', 'images/A108_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0108</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0108 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 109-->
+            <div class="product">
+                <img src="images\A109.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A109_1.jpg', 'images/A109_2.jpg', 'images/A109_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0109</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0109 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 110-->
+            <div class="product">
+                <img src="images\A110.jpg" alt="Producto 3" onclick="openProductModal('Bolso Enlonado', 'Bolso Enlonado Perfecto Para Llevar Tu Celular Y Billetera ', ['images/A110_1.jpg', 'images/A110_2.jpg', 'images/A110_3.jpg'])">
+                <h3>Bolso Enlonado Ref 0110</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref0110 Bolso Enlonado', 65000)">Añadir al carrito</button>
+            </div>
+
+          <!-- Puedes agregar más productos aquí -->
+        </section>
+    </main>
+
+    <!-- Ventana emergente (modal) para los detalles de productos -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeProductModal()">&times;</span>
+            <h2 id="modal-product-name"></h2>
+            <p id="modal-product-description"></p>
+            <div id="modal-product-images"></div>
+        </div>
+    </div>
+
+    <!-- Ventana emergente para oferta relámpago -->
+    <div id="offer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOfferModal()">&times;</span>
+            <h2>Oferta Relámpago</h2>
+            <p>Descripción de la oferta especial.</p>
+            <div id="offer-images">
+                <img src="images\A1.jpg" alt="Oferta 1">
+                <img src="images\A1.jpg" alt="Oferta 2">
+                <img src="images\A1.jpg" alt="Oferta 2">
+                
+            </div>
+            <div id="offer-cart">
+                <button onclick="addToCart('Oferta 1', 80000)">Añadir Oferta 1 al carrito - $80,000</button>
+               
+                
+                <!-- Añade más botones para ofertas aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrito de compras -->
+    <div id="cart" class="cart">
+        <span class="close" onclick="closeCart()">&times;</span>
+        <h2>Carrito de Compras</h2>
+        <div id="cart-items"></div>
+        <div id="cart-total">Total: $0</div>
+        <button id="checkout-btn" onclick="checkout()">Hacer Pedido</button>
+        <button id="clear-cart-btn" onclick="clearCart()">Borrar Carrito</button>
+    </div>
+
+    <script>
+        let cart = [];
+        let total = 0;
+
+        // Abrir la ventana modal para productos
+        function openProductModal(name, description, images) {
+            document.getElementById('modal-product-name').innerText = name;
+            document.getElementById('modal-product-description').innerText = description;
+            let modalImages = document.getElementById('modal-product-images');
+            modalImages.innerHTML = '';
+            images.forEach(image => {
+                modalImages.innerHTML += `<img src="${image}" alt="${name}">`;
+            });
+            document.getElementById('product-modal').style.display = 'block';
+        }
+
+        // Cerrar la ventana modal para productos
+        function closeProductModal() {
+            document.getElementById('product-modal').style.display = 'none';
+        }
+
+        // Abrir la ventana modal para oferta relámpago
+        function openOfferModal() {
+            document.getElementById('offer-modal').style.display = 'block';
+        }
+
+        // Cerrar la ventana modal para oferta relámpago
+        function closeOfferModal() {
+            document.getElementById('offer-modal').style.display = 'none';
+        }
+
+        // Abrir el carrito de compras
+        function openCart() {
+            document.getElementById('cart').style.display = 'block';
+            updateCart(); // Actualizar el carrito al abrir
+        }
+
+        // Cerrar el carrito de compras
+        function closeCart() {
+            document.getElementById('cart').style.display = 'none';
+        }
+
+        // Añadir producto al carrito
+        function addToCart(name, price) {
+            let product = cart.find(item => item.name === name);
+            if (product) {
+                product.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            updateCart();
+        }
+
+        // Actualizar el carrito
+        function updateCart() {
+            let cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            total = 0;
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                cartItems.innerHTML += `
+                    <p>
+                        ${item.name} - $${item.price} x ${item.quantity}
+                        <button onclick="decreaseQuantity('${item.name}')">-</button>
+                        <button onclick="increaseQuantity('${item.name}')">+</button>
+                        <button onclick="removeFromCart('${item.name}')">Eliminar</button>
+                    </p>
+                `;
+            });
+            document.getElementById('cart-total').innerText = `Total: $${total}`;
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-count').style.display = cart.length ? 'inline' : 'none';
+        }
+
+        // Aumentar cantidad de un producto
+        function increaseQuantity(productName) {
+            let product = cart.find(item => item.name === productName);
+            if (product) {
+                product.quantity += 1;
+                updateCart();
+            }
+        }
+
+        // Disminuir cantidad de un producto
+        function decreaseQuantity(productName) {
+            let product = cart.find(item => item.name === productName);
+            if (product && product.quantity > 1) {
+                product.quantity -= 1;
+                updateCart();
+            }
+        }
+
+        // Eliminar producto del carrito
+        function removeFromCart(productName) {
+            cart = cart.filter(item => item.name !== productName);
+            updateCart();
+        }
+
+        // Limpiar el carrito
+        function clearCart() {
+            cart = [];
+            updateCart();
+        }
+
+        // Hacer pedido y dirigir a WhatsApp
+        function checkout() {
+            let message = 'Hola, quiero hacer un pedido:\n';
+            cart.forEach(item => {
+                message += `${item.name} - Cantidad: ${item.quantity}\n`;
+            });
+            message += `Total: $${total}`;
+            window.open(`https://wa.me/3044605939?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
