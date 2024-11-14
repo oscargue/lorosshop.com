@@ -16,7 +16,7 @@
             background-color: #4ec179;
             color: white;
             text-align: center;
-            padding: 1em 0;
+            padding: 1em 0 0;
             position: relative;
         }
         .cart-icon {
@@ -170,16 +170,16 @@
 </head>
 <body>
 
-    <header>
+    <header style="position: sticky; top: 0;">
         <h1>Marketplace - Lorosshop.com</h1>
         <div class="cart-icon" onclick="openCart()">
             🛒<span id="cart-count" class="cart-count">0</span>
+        </div>  
+        <div id="offer-bar" onclick="openOfferModal()">
+            ¡Oferta Relámpago!   >
         </div>
     </header>
 
-    <div id="offer-bar" onclick="openOfferModal()">
-        ¡Oferta Relámpago!   >
-    </div>
 
     <main>
         <section id="products">
