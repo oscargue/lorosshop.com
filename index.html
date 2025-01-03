@@ -1195,10 +1195,17 @@
 </section>
 </main>
 
+<!-- Ventana emergente (modal) para los detalles de productos -->
+<div id="product-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeProductModal()">&times;</span>
+        <h2 id="modal-product-name"></h2>
+        <p id="modal-product-description"></p>
+        <div id="modal-product-images"></div>
+    </div>
+</div>
 
-
-
-    <!-- Ventana emergente para oferta relámpago -->
+<!-- Ventana emergente para oferta relámpago -->
     <div id="offer-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeOfferModal()">&times;</span>
