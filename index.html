@@ -3,189 +3,1357 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LorosShop - Gorras de Caballos</title>
-    <meta name="description" content="Compra las mejores gorras con diseños de caballos para hombres, mujeres y niños. Ofertas exclusivas y envíos rápidos.">
-    <meta name="keywords" content="gorras de caballos, moda ecuestre, accesorios ecuestres, gorras para hombre, gorras para mujer, tienda en línea">
+    <title>Marketplace - Venta de Productos</title>
     <style>
-  
-  body {
-    background: linear-gradient(180deg, #d6bef3, #C5A3E2);
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    color: #333;
-}
-       .header {
-            padding: 15px;
-            background: #600d6f;
-            border-radius: 20px;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e8eaec;
         }
-        .logo {
-            width: 55%;
-            max-width: 140px;
-            height: auto;
-            border-radius: 10px;
+        header {
+            background-color: #2471a3;
+            color: white;
+            text-align: center;
+            padding: 1em 0 0;
+            position: relative;
         }
-        .video-container {
-            margin: 15px auto;
-            width: 90%;
-            max-width: 600px;
+        .cart-icon {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
         }
-        .video-container video {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
+        .cart-count {
+            background-color: #b2d9f6;
+            border-radius: 50%;
+            padding: 4px 8px;
+            color: white;
+            font-size: 14px;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            animation: blink 1s infinite;
         }
-        .photo-gallery {
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        #offer-bar {
+            background-color: #709afb;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #products {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            padding: 15px;
+            justify-content: space-around;
+            padding: 2em;
         }
-        .photo-item {
-            background: white;
-            width: 95%;
-            max-width: 230px;
-            padding: 8px;
-            border-radius: 10px;
+        .product {
+            background-color: white;
+            padding: 1em;
+            margin: 1em;
+            width: 250px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s;
-            color: black;
         }
-        .photo-item:hover {
-            transform: scale(1.05);
-        }
-        .photo-item img {
+        .product img {
             width: 100%;
-            border-radius: 10px;
-        }
-        .buy-button {
-            display: block;
-            margin: 8px auto;
-            padding: 8px;
-            background: green;
-            color: white;
-            text-decoration: none;
+            height: auto;
             border-radius: 5px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .buy-button:hover {
-            background: darkgreen;
-        }
-        .flash-sale {
-            background: #f9b100;
-            color: #000000;
-            padding: 12px;
-            font-size: 20px;
             cursor: pointer;
-            margin: 15px;
-            border-radius: 10px;
         }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #709afb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color:  #2752b7;
+        }
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.8);
         }
         .modal-content {
             background-color: white;
             margin: 10% auto;
-            padding: 15px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 350px;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
             text-align: center;
-            color: black;
+            border-radius: 10px;
+        }
+        .modal img {
+            width: 200px;
+            margin: 10px;
         }
         .close {
-            color: red;
-            font-size: 22px;
+            color: #2752b7;
             float: right;
+            font-size: 28px;
+            font-weight: bold;
             cursor: pointer;
         }
-        @media (max-width: 600px) {
-            .photo-item {
-                width: 100%;
-            }
-            .modal-content {
-                width: 95%;
-            }
-            .logo {
-                width: 55%;
-                max-width: 130px;
-            }
-            .video-container {
-                max-width: 100%;
-            }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Carrito de compras */
+        .cart {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            right: 0;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #f7d8fc;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+        }
+        #cart-items {
+            margin-bottom: 20px;
+        }
+        #cart-items p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #cart-total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        #checkout-btn {
+            background-color: #2752b7;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #checkout-btn:hover {
+            background-color: #8ea0fc;
+        }
+        #clear-cart-btn {
+            background-color: #6f27b7;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #clear-cart-btn:hover {
+            background-color: #ad73e8;
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <img src="C:/Users/oscar/OneDrive/Documentos/loroshop morado/a1.jpg" alt="Logo de LorosShop" class="logo">
+
+    <header style="position: sticky; top: 0;">
+        <h1>Marketplace - Lorosshop.com</h1>
+        <div class="cart-icon" onclick="openCart()">
+            🛒<span id="cart-count" class="cart-count">0</span>
+        </div>  
+        <div id="offer-bar" onclick="openOfferModal()">
+            ¡Oferta Relámpago!   >
+        </div>
     </header>
-<link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <div class="video-container">
-        <video controls>
-            <source src="/Users/oscar/OneDrive/Documentos/loroshop morado/mi video.mp4" type="video/mp4">
-            Tu navegador no soporta la etiqueta de video.
-        </video>
-    </div>
 
-    <div class="flash-sale" onclick="openSaleModal()">¡Oferta Relámpago! 🔥</div>
 
-    <div id="sale-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeSaleModal()">&times;</span>
-            <h2>¡Descuentos Especiales!</h2>
-            <p>Aprovecha nuestras ofertas exclusivas por tiempo limitado.</p>
+    <main>
+        <section id="products">
+            <!-- Producto 1 -->
             <div class="product">
-                <img src="img/producto1.jpg" alt="Producto en Oferta">
-                <p><strong>Producto 1 - $12.99</strong></p>
-                <a href="https://wa.me/3044605939?text=Quiero%20comprar%20Producto%201%20por%20$12.99" class="buy-button">Comprar Ahora</a>
+                <img src="images/ft-a1.jpg" alt="producto 1" onclick="openProductModal('Juego Reloj + pulcera, collar, manilla y anillo', 'Caja elegante y compacta que incluye un set exclusivo de aretes, reloj, manilla, collar y anillo. Ideal para regalar o lucir en cualquier ocasión. Diseño sofisticado y excelente calidad.', ['images/ft-a1-2.jpg', 'images/ft-a1-3.jpg', 'images/ft-a1-4.jpg', 'images/ft-a1-5.jpg', 'images/ft-a1-6.jpg'])">
+                <h3>Ref.001 Juego reloj + pulsera, collar, aretes y anillo </h3>
+                <p>Precio: $56.000</p>
+                <button onclick="addToCart('Ref001 Juego Reloj', 56000 )">Añadir al carrito</button>
+            </div>
+<!-- Producto 2 -->
+<div class="product">
+    <img src="images/ft-a2.jpg" alt="producto 1" onclick="openProductModal('Set De Joyas', 'Caja elegante y compacta que incluye un set exclusivo de aretes, reloj, manilla, collar y anillo. Ideal para regalar o lucir en cualquier ocasion, excelente calidad.', ['images/ft-a2-2.jpg', 'images/ft-a2-3.jpg', 'images/ft-a2-4.jpg', 'images/ft-a2-5.jp4', 'images/ft-a2-6.jpg'])">
+    <h3>Ref.002 Set De Joyas</h3>
+    <p>Precio: $56.000</p>
+    <button onclick="addToCart('Set De Joyas Ref001', 56000 )">Añadir al carrito</button>
+</div>
+
+<!-- Producto 2 -->
+<div class="product">
+    <img src="images/ft-a3.jpg" alt="producto 1" onclick="openProductModal('NO DISPONILE', 'NO DISPONIBLE .', ['images/ft-a3-2.jpg', 'images/ft-a3-3.jpg', 'images/ft-a3-4.jpg', 'images/ft-a3-5.jp4', 'images/ft-a3-6.jpg'])">
+    <h3>Ref.003 NO DISPONIBLE </h3>
+    <p>Precio: $00.000</p>
+    <button onclick="addToCart('NO DISPONIBLE',  )">Añadir al carrito</button>
+</div>
+
+<!-- Producto 2 -->
+<div class="product">
+    <img src="images/ft-a4.jpg" alt="producto 1" onclick="openProductModal('NO DISPONIBLE', 'NO DISPONIBLE, ', ['images/ft-a4-2.jpg', 'images/ft-a4-3.jpg', 'images/ft-a4-4.jpg', 'images/ft-a4-5.jp4', 'images/ft-a4-6.jpg'])">
+    <h3>Ref.004 NO DISPONIBLE</h3>
+    <p>Precio: $00.000</p>
+    <button onclick="addToCart('NO DISPONOBLE',  )">Añadir al carrito</button>
+</div>
+
+<!-- Producto 2 -->
+<div class="product">
+    <img src="images/ft-a5.jpg" alt="producto 1" onclick="openProductModal('NO DISPONIBLE', 'NO DISPONIBLE', ['images/ft-a5-2.jpg', 'images/ft-a5-3.jpg', 'images/ft-a5-4.jpg', 'images/ft-a5-5.jp4', 'images/ft-a5-6.jpg'])">
+    <h3>Ref.005 NO DISPONIBLE</h3>
+    <p>Precio: $00.000</p>
+    <button onclick="addToCart('NO DISPONIBLE',  )">Añadir al carrito</button>
+</div> 
+        
+<!-- Producto 6 -->
+            <div class="product">
+                <img src="images/ft-a6.jpg" alt="Producto 3" onclick="openProductModal('Se unica y exclusiva con este reloj', 'Elegante reloj manilla perfecto para tu outfit diario con ese toque exclusivo y unico, diseño delicado y pulsera ajustable ', ['images/ft-a6-1.jpg', 'images/ft-a6-2.jpg', 'images/ft-a6-3.jpg', 'images/ft-a6-4.jpg',  'images/ft-a6-5.jpg'])">
+                <h3>Ref.006 Reloj manilla perla grande morada</h3>
+                <p>Precio: $24,000</p>
+                <button onclick="addToCart('Ref006 Elegante reloj manilla ', 24000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 7 -->
+            <div class="product">
+                <img src="images/ft-a7.jpg" alt="Producto 3" onclick="openProductModal('Espectacular reloj LED', 'Un accesorio que combina elegancia y tecnologia con su diseño moderno y sofisticado perfecto para ti, color vino tinto ', ['images/ft-a7-1.jpg', 'images/ft-a7-2.jpg', 'images/ft-a7-3.jpg', 'images/ft-a7-4.jpg', 'images/ft-a7-5.jpg'])">
+                <h3>Ref.007 Espectacular Reloj LED </h3>
+                <p>Precio: $25,000</p>
+                <button onclick="addToCart('Ref007 Espectacular Reloj LED', 25000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 10 -->
+            <div class="product">
+                <img src="images/ft-a10.jpg" alt="producto 1" onclick="openProductModal('Reloj LED ', 'Se unica y resplandece con este espectacular reloj LED, ideal para destacar en cualquier ocasion y complementar tu estilo. ', ['images/ft-a10-1.jpg', 'images/ft-a10-2.jpg'])">
+                <h3>Ref1.012 Reloj LED azul cielo</h3>
+                <p>Precio: $25,000</p>
+                <button onclick="addToCart('Ref012 Reloj LED azul cielo', 25000)">Añadir al carrito</button>
+            </div>
+            <!-- Producto 11 -->
+            <div class="product">
+                <img src="images/ft-a11.jpg" alt="Producto 2" onclick="openProductModal(' Set De Amistad: Par de Aretes + Trio de Manillas', 'Detalles únicos para compartir y lucir juntas. .', ['images/ft-a11-1.jpg', 'images/ft-a11-2.jpg'])">
+                <h3>Ref.902 Set De Amistad: Par de Aretes + Trio de Manillas </h3>
+                <p>Precio: $16,000</p>
+                <button onclick="addToCart('Ref902  Set De Amistad: Par de Aretes + Trio de Manillas ', 16000)">Añadir al carrito</button>
+            </div>
+            <!-- Producto 12 -->
+            <div class="product">
+                <img src="images/ft-a12.jpg" alt="Producto 3" onclick="openProductModal('Exclusivo reloj + adorable llavero', 'Su diseño colorido lo convierte en la eleccion perfecta para cualquier outfit', ['images/ft-a12-1.jpg', 'images/ft-a12-2.jpg'])">
+                <h3>Ref.014 Exclusivo reloj + adorable llavero </h3>
+                <p>Precio: $34,000</p>
+                <button onclick="addToCart('Ref014 Exclusivo reloj + adorable llavero', 34000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 13 -->
+            <div class="product">
+                <img src="images/ft-a13.jpg" alt="Producto 3" onclick="openProductModal('Reloj + espectacular llavero', 'Reloj juvenil que incluye un adorable llavero que añade un toque extra a tu estilo', ['images/ft-a13-1.jpg', 'images/ft-a13-2.jpg'])">
+                <h3>Ref.018 Reloj + espectacular llavero </h3>
+                <p>Precio: $34,000</p>
+                <button onclick="addToCart('Ref018 Reloj + espectacular llavero', 34000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 14 -->
+            <div class="product">
+                <img src="images/ft-a14.jpg" alt="Producto 3" onclick="openProductModal('Reloj deportivo + lindo llavero ', 'Lindo y exclusivo reloj moderno  color palo de rosa, colorido exclusivo para convinar tu outfit con los mejores accesorios', ['images/ft-a14-1.jpg', 'images/ft-a14-2.jpg'])">
+                <h3>Ref.017 Reloj deportivo + lindo llavero  </h3>
+                <p>Precio: $34,000</p>
+                <button onclick="addToCart('Ref 017 Reloj deportivo + lindo llavero ', 34000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 15 -->
+            <div class="product">
+                <img src="images/ft-a15.jpg" alt="Producto 3" onclick="openProductModal('Moderno reloj + exclusivo llavero ', 'Preparate para cualquier aventura! Estilo impecable  y espectacular para tu dia a dia ', ['images/ft-a15-1.jpg', 'images/ft-a15-2.jpg'])">
+                <h3>Ref.015 Moderno reloj + exclusivo llavero </h3>
+                <p>Precio: $34,000</p>
+                <button onclick="addToCart('Ref015 Moderno Reloj + exclusivo llavero', 34000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 16 -->
+            <div class="product">
+                <img src="images/ft-a16.jpg" alt="Fundas De Celular" onclick="openProductModal('Reloj deportivo + monedero juvenil', 'El combo perfecto para el estilo juvenil ', [ 'images/ft-a16-2.jpg', 'images/ft-a16-3.jpg'])">
+                <h3>Ref.019 Reloj deportivo + monedero juvenil</h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref019 Reloj Deportivo + monedero juvenil', 35000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 17 -->
+            <div class="product">
+                <img src="images/ft-a17.jpg" alt="Producto 3" onclick="openProductModal('Reloj infantil con la convinacion perfecta ', 'El conjunto ideal para el joven activo ', ['images/ft-a17-1.jpg', 'images/ft-a17-2.jpg'])">
+                <h3>Ref.021 Reloj infantil con la convinacion perfecta </h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref021 Reloj infantil con la convinacion perfecta', 35000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 18-->
+            <div class="product">
+                <img src="images/ft-a18.jpg" alt="Producto 3" onclick="openProductModal('Reloj casula + monedero juvenil ', 'El cojunto perfecto para el estilo diario ', ['images/ft-a18-1.jpg', 'images/ft-a18-2.jpg'])">
+                <h3>Ref.020 Reloj casual + monedero juvenil</h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref020 Reloj casual + monedero juvenil', 35000)">Añadir al carrito</button>
+            </div>
+ 
+<!-- Producto 19-->
+            <div class="product">
+                <img src="images/ft-a19.jpg" alt="Producto 3" onclick="openProductModal('Exclusivo reloj juvenil + monedero compacto con estilo', 'Comodidad y estilo juvenil ', ['images/ft-a19-2.jpg', 'images/ft-a19-3.jpg'])">
+                <h3>Ref.022 Exclusivo reloj juvenil + monedero compacto con estilo </h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref022 Exclusivo reloj juvenil + monedero compacto con estilo', 35000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 20-->
+            <div class="product">
+                <img src="images/ft-a20.jpg" alt="Producto 3" onclick="openProductModal('Reloj deportivo New-P', '¡Lleva tu estilo activo al siguiente nivel! el compañero perfecto para tus aventuras. ', ['images/ft-a20-1.jpg', 'images/ft-a20-3.jpg'])">
+                <h3>Ref.024 Reloj deportivo New-P </h3>
+                <p>Precio: $25,000</p>
+                <button onclick="addToCart('Ref024 Reloj deportivo New-P', 25000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 21-->
+            <div class="product">
+                <img src="images/ft-a21.jpg" alt="Producto 3" onclick="openProductModal('Reloj deportivo New-P', '¡Lleva tu estilo activo al siguiente nivel! el compañero perfecto para tus aventuras. ', ['images/ft-a21-1.jpg','images/ft-a21-3.jpg'])">
+                <h3>Ref.023 Reloj deportivo New-P</h3>
+                <p>Precio: $25,000</p>
+                <button onclick="addToCart('Ref023 Reloj deportivo New-P', 25000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 22-->
+            <div class="product">
+                <img src="images/ft-a22.jpg" alt="Producto 3" onclick="openProductModal('Reloj clasico + elegante manilla en aro', 'Perfecto para un look casual y moderno.', ['images/ft-a22-1.jpg', 'images/ft-a22-3.jpg'])">
+                <h3>Ref.027 Reloj clasico + elegante manilla  </h3>
+                <p>Precio: $26,000</p>
+                <button onclick="addToCart('Ref027 Reloj clasico + elegante manilla ', 26000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 23-->
+            <div class="product">
+                <img src="images/ft-a23.jpg" alt="Producto 3" onclick="openProductModal('Reloj moderno de manilla ajustable  ', 'Ligero y perfecto para tu dia a dia ', ['images/ft-a23-1.jpg','images/ft-a23-3.jpg'])">
+                <h3>Ref.028 Reloj moderno de manilla ajustable  </h3>
+                <p>Precio: $25,000</p>
+                <button onclick="addToCart('Ref028 Reloj moderno de manilla ajustable', 25000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 24-->
+            <div class="product">
+                <img src="images/ft-a24.jpg" alt="Producto 3" onclick="openProductModal('Reloj de manilla ajustable ', 'Diseño moderno al mejor precio', ['images/ft-a24-1.jpg', 'images/ft-a24-3.jpg'])">
+                <h3>Ref.030 Reloj de manilla ajustable </h3>
+                <p>Precio: $25,000</p>
+                <button onclick="addToCart('Ref030 Reloj de manilla ajustable ', 25000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 25-->
+            <div class="product">
+                <img src="images/ft-a25.jpg" alt="Producto 3" onclick="openProductModal('Clasico reloj manilla ajustable ', 'Comodidad y diseño versatil para cada ocasiòn', ['images/ft-a25-1.jpg', 'images/ft-a25-3.jpg'])">
+                <h3>Ref.029 Clasico reloj manilla ajustable</h3>
+                <p>Precio: $25,000</p>
+                <button onclick="addToCart('Ref029 Clasico reloj manilla ajustable ', 25000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 26-->
+            <div class="product">
+                <img src="images/ft-a26.jpg" alt="Producto 3" onclick="openProductModal('Conjunto casual: Reloj+ aretes en acero inoxidable', 'La convinacion perfecta para cada ocasiòn', ['images/ft-a26-1.jpg',  'images/ft-a26-3.jpg'])">
+                <h3>Ref.031 Conjunto casual: Reloj + aretes en acero inoxidable </h3>
+                <p>Precio: $24,000</p>
+                <button onclick="addToCart('Ref031 Conjunto casual: Reloj + aretes en acero inoxidable', 24000)" >Añadir al carrito</button>
+            </div>
+
+<!-- Producto 27-->
+            <div class="product">
+                <img src="images/ft-a27.jpg" alt="Producto 3" onclick="openProductModal('Conjunto de reloj y aretes de estilo clasico', 'Elegancia y brillo para ti dia a dia', ['images/ft-a27-1.jpg', 'images/ft-a27-3.jpg' ])">
+                <h3>Ref.032 Conjunto de reloj y aretes de estilo clàsico</h3>
+                <p>Precio: $24,000</p>
+                <button onclick="addToCart('Ref032 Conjunto de reloj y aretes de estilo clàsico ', 24000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 28-->
+            <div class="product">
+                <img src="images/ft-a28.jpg" alt="Producto 3" onclick="openProductModal('Moderno diseño de reloj y aretes ', 'Lujo y estilo en solo set  ', ['images/ft-a28-1.jpg',  'images/ft-a28-3.jpg'])">
+                <h3>Ref.033 Moderno diseño de reloj + aretes</h3>
+                <p>Precio: $24,000</p>
+                <button onclick="addToCart('Ref033 Moderno diseño de reloj + aretes', 24000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 29-->
+            <div class="product">
+                <img src="images/ft-a29.jpg" alt="Producto 3" onclick="openProductModal('Reloj deportivo Negro de hombre', 'Su diseño atemporal y fácil lectura hacen de él un accesorio imprescindible en tu colección. ¡Luce sofisticada y puntual! ', ['images/ft-a29-1.jpg', 'images/ft-a29-3.jpg'])">
+                <h3>Ref.034 Reloj analogo negro</h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref034 Reloj analogo negro', 35000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 30-->
+            <div class="product">
+                <img src="images/ft-a30.jpg" alt="Producto 3" onclick="openProductModal('Reloj digital', 'su estilo deportivo se adapta perfectamente a tu look diario. Con detalles únicos y una esfera fácil de leer.', ['images/ft-a30-1.jpg', 'images/ft-a30-3.jpg'])">
+                <h3>Ref.035 Reloj digital</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref035 Reloj digital', 65000)">Añadir al carrito</button>
+            </div>
+
+
+<!-- Producto 32-->
+            <div class="product">
+                <img src="images/ft-a32.jpg" alt="Producto 3" onclick="openProductModal('Combo elegante: reloj+ Billetera ', 'Este set incluye un elegante reloj y una billetera a juego, ideales para completar tu look diario. Con un diseño moderno y materiales de alta calidad', ['images/ft-a32-2.jpg', 'images/ft-a32-3.jpg'])">
+                <h3>Ref.037 Combo reloj + billetera</h3>
+                <p>Precio: $40,000</p>
+                <button onclick="addToCart('Ref037 Combo reloj + billetera', 40000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 33-->
+            <div class="product">
+                <img src="images/ft-a33.jpg" alt="Producto 3" onclick="openProductModal('Combo elegante: reloj + billetera', 'Este set incluye un elegante reloj y una billetera a juego, ideales para completar tu look diario. Con un diseño moderno y materiales de alta calidad', ['images/ft-a33-1.jpg', 'images/ft-a33-3.jpg'])">
+                <h3>Ref.038 Combo reloj + billetera</h3>
+                <p>Precio: $40,000</p>
+                <button onclick="addToCart('Ref038 Combo + billetera', 40000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 34-->
+            <div class="product">
+                <img src="images/ft-a34.jpg" alt="Producto 3" onclick="openProductModal('Tiempos Juntos: Relojes de pareja perfectos para conectar', 'Un conjunto romántico que celebra el amor. Este par de relojes complementarios combina estilo y elegancia. Diseñados con detalles sutiles y un acabado de alta calidad. ', ['images/ft-a34-1.jpg', 'images/ft-a34-2.jpg'])">
+                <h3>Ref.039 Tiempo Juntos: Relojes de pareja perfectos para conectar</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref039 Tiempos Juntos: Relojes de pareja perfectos para conectar', 65000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 35-->
+            <div class="product">
+                <img src="images/ft-a35.jpg" alt="Producto 3" onclick="openProductModal('Tiempos Juntos: Relojes de pareja perfectos para Conectar', 'Un conjunto romántico que celebra el amor. Este par de relojes complementarios combina estilo y elegancia. Diseñados con detalles sutiles y un acabado de alta calidad. ', ['images/ft-a35-1.jpg', 'images/ft-a35-2.jpg'])">
+                <h3>Ref.040 Tiempos Juntos: Relojes de pareja perfectos para conectar</h3>
+                <p>Precio: $65,000</p>
+                <button onclick="addToCart('Ref040 Tiempos Juntos: Relojes de pareja perfectos para conectar', 65000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 36-->
+            <div class="product">
+                <img src="images/ft-a36.jpg" alt="Producto 3" onclick="openProductModal('Reloj casual para cada momento ', 'Diseño resistente y moderno ¡Luce bien mientras mantienes el ritmo! ', [ 'images/ft-a36-2.jpg', 'images/ft-a36-3.jpg'])">
+                <h3>Ref.041 Reloj casual para cada momento </h3>
+                <p>Precio: $30,000</p>
+                <button onclick="addToCart('Ref041 Reloj casual  para cada momento', 30000)">Añadir al carrito</button>
+            </div>
+
+
+            <!-- Producto 37-->
+            <div class="product">
+                <img src="images/ft-a37.jpg" alt="Producto 3" onclick="openProductModal('Conexión Perfecta: Relojes de pareja para compartir el tiempo', 'Un conjunto elegante y significativo que celebra el amor detalles que reflejan la conexión entre ambos, son el regalo ideal para aniversarios, bodas o simplemente para expresar su amor.', ['images/ft-a37-1.jpg','images/ft-a37-3.jpg'])">
+                <h3>Ref.042 Conexión Perfecta: Relojes de pareja para compartir el Tiempo</h3>
+                <p>Precio: $110,000</p>
+                <button onclick="addToCart('Ref042 Conexión Perfecta: Relojes de pareja para compartir el tiempo', 110000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 38-->
+            <div class="product">
+                <img src="images/ft-a38.jpg" alt="Producto 3" onclick="openProductModal('Conexión Perfecta: Relojes de pareja para compartir el tiempo', 'Un conjunto elegante y significativo que celebra el amor detalles que reflejan la conexión entre ambos, son el regalo ideal para aniversarios, bodas o simplemente para expresar su amor. ', ['images/ft-a38-1.jpg','images/ft-a38-3.jpg'])">
+                <h3>Ref.043 Conexión Perfecta: Relojes de pareja para pompartir el tiempo</h3>
+                <p>Precio: $110,000</p>
+                <button onclick="addToCart('Ref043 Conexión Perfecta: Relojes de pareja para compartir el tiempo', 110000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 39-->
+            <div class="product">
+                <img src="images/ft-a39.jpg" alt="Producto 3" onclick="openProductModal('Amor en cada segundo: La pareja perfecta de reloj deportivo. ', 'La conbinacion perfecta de estilo y aventura, estos relojes son funcionales y resistentes para disfrutar de nuevas experiencias. ', ['images/ft-a39-1.jpg', 'images/ft-a39-2.jpg'])">
+                <h3>Ref.044 Amor en cada segundo: Relojes deportivos de pareja que conectan</h3>
+                <p>Precio: $105,000</p>
+                <button onclick="addToCart('Ref044 Amor en cada segundo: Relojes deportivos de pareja para compartir el tiempo', 105000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 40-->
+            <div class="product">
+                <img src="images/ft-a40.jpg" alt="Producto 3" onclick="openProductModal('Conexion en cada latido, relojes de pareja que enamoran ', 'Perfectos para entrenamientos, caminatas, carreras o simplemente para un estilo de vida dinámico, los relojes deportivos para parejas ofrecen un diseño a juego o complementario, destacando la conexión entre ambos mientras enfrentan juntos cada momento del día.', ['images/ft-a40-1.jpg', 'images/ft-a40-3.jpg'])">
+                <h3>Ref.045 Conexion en cada latido, relojes de pareja que enamoran </h3>
+                <p>Precio: $105,000</p>
+                <button onclick="addToCart('Ref045 Conexion en cada latido, relojes de pareja que enamoran ', 105000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 41-->
+            <div class="product">
+                <img src="images/ft-a41.jpg" alt="Producto 3" onclick="openProductModal('Juntos en el tiempo', 'Relojes de pareja que enamoran perfectos para celebrar el amor ', ['images/ft-a41-1.jpg', 'images/ft-a41-3.jpg'])">
+                <h3>Ref.046 Juntos en el tiempo, relojes de pareja para un amor sin fin </h3>
+                <p>Precio: $105,000</p>
+                <button onclick="addToCart('Ref046 Juntos en el tiempo, relojes de pareja para un amor sin fin ', 105000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 42-->
+            <div class="product">
+                <img src="images/ft-a42.jpg" alt="Producto 3" onclick="openProductModal('Reloj Dama G-FORCE', 'Este reloj es perfecto para realzar cualquier outfit, ya sea casual o formal. Su esfera fácil de leer y correa cómoda garantizan funcionalidad sin sacrificar el estilo. ¡Luce radiante y puntual con el reloj. ', ['images/ft-a42-1.jpg', 'images/ft-a42-2.jpg',])">
+                <h3>Ref.047 Reloj Dama G-FORCE</h3>
+                <p>Precio: $110,000</p>
+                <button onclick="addToCart('Ref47 Reloj Dama G-FORCE', 110000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 43-->
+            <div class="product">
+                <img src="images/ft-a43.jpg" alt="Producto 3" onclick="openProductModal('Reloj deportivo caballero G-FORCE', 'Su diseño moderno y deportivo lo convierte en el complemento perfecto para un estilo activo. ¡Mantente siempre listo para el desafío con el reloj Force!', ['images/ft-a43-1.jpg', 'images/ft-a43-2.jpg'])">
+                <h3>Ref.048 Reloj deportivo caballero G-FORCE</h3>
+                <p>Precio: $95,000</p>
+                <button onclick="addToCart('Ref048 Reloj deportivo caballero G-FORC', 95000)">Añadir al carrito</button>
+            </div>
+
+
+
+<!-- Producto 45-->
+            <div class="product">
+                <img src="images/ft-a45.jpg" alt="Producto 3" onclick="openProductModal('Elegancia Completa: Reloj con pulsera a juego', 'Un conjunto chic que combina elegancia y versatilidad. Este set incluye un reloj estilizado y una pulsera a juego, perfectos para añadir un toque de glamour a cualquier outfit.', ['images/ft-a45-1.jpg', 'images/ft-a45-3.jpg'])">
+                <h3>Ref.051 Elegancia Completa: Reloj con pulsera a juego </h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref051 Elegancia Completa: Reloj con pulsera a juego', 35000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 46-->
+            <div class="product">
+                <img src="images/ft-a46.jpg" alt="Producto 3" onclick="openProductModal('Estilo y Distinción: Set de reloj con pulsera', 'El reloj, con un diseño moderno y sofisticado, combina perfectamente con la pulsera a juego, creando una armonía visual que eleva cualquier atuendo. Hechos con materiales de alta calidad, ambos accesorios ofrecen durabilidad y comodidad. , ', ['images/ft-a46-1.jpg', 'images/ft-a46-2.jpg'])">
+                <h3>Ref.052 Estilo y Distinción: Set de reloj con pulsera</h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref052 Estilo y Distinción: Set de reloj con pulsera' , 35000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 47-->
+            <div class="product">
+                <img src="images/ft-a47.jpg" alt="Producto 3" onclick="openProductModal('Combinación Ganadora: Reloj con pulsera incluida', ' Hechos con materiales de alta calidad, ambos accesorios ofrecen durabilidad y comodidad, haciendo de este set la opción ideal tanto para ocasiones especiales como para el uso diario. Expresa tu personalidad y estilo con esta combinación que no pasará desapercibida.', ['images/ft-a47-1.jpg', 'images/ft-a47-2.jpg'])">
+                <h3>Ref.053 Combinación Ganadora: Reloj con pulsera incluida</h3>
+                <p>Precio: $35,000</p>
+                <button onclick="addToCart('Ref053 Combinación Ganadora: Reloj con pulsera incluida', 35000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 48-->
+            <div class="product">
+                <img src="images/ft-a48.jpg" alt="Producto 3" onclick="openProductModal('Amistad en Detalle: Par Aretes + Juego Manillas', ' Par Aretes + Duo pulseras diseñados para celebrar vínculos especiales. ¡Comparte y combina con estilo!. ', ['images/ft-a48-1.jpg', 'images/ft-a48-2.jpg'])">
+                <h3>Ref.904 Amistad en Detalle: Par Aretes + Juego Manillas</h3>
+                <p>Precio: $16,000</p>
+                <button onclick="addToCart('Ref904 Amistad en Detalle: Par Aretes + Juego Manillas', 16000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 49-->
+            <div class="product">
+                <img src="images/ft-a49.jpg" alt="Producto 3" onclick="openProductModal('Reloj deportivo para hombre', 'Su esfera clara y correa resistente garantizan comodidad y durabilidad, perfectas para el uso diario o para ocasiones especiales. ¡Luce con confianza y puntualidad con el reloj Crassray!', ['images/ft-a49-1.jpg', 'images/ft-a49-3.jpg'])">
+                <h3>Ref.055 Reloj deportivo para hombre</h3>
+                <p>Precio: $55,000</p>
+                <button onclick="addToCart('Ref055 Reloj deportivo para hombre', 55000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 50-->
+            <div class="product">
+                <img src="images/ft-a50.jpg" alt="Producto 3" onclick="openProductModal('Reloj Juvenil para mujer con actitud', 'Ligero y cómodo, es ideal para el uso diario y para mostrar tu estilo único. ¡Dale un toque fresco a tu look con este encantador reloj!', ['images/ft-a50-1.jpg', 'images/ft-a50-2.jpg'])">
+                <h3>Ref.058 Reloj Juvenil para mujer con actitud</h3>
+                <p>Precio: $20,000</p>
+                <button onclick="addToCart('Ref058 Reloj Juvenil para mujer con actitud', 20000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 51-->
+            <div class="product">
+                <img src="images/ft-a51.jpg" alt="Producto 3" onclick="openProductModal('Vibrante y Chic: Reloj juvenil femenino', 'Este reloj juvenil para mujer combina frescura, moda y versatilidad en un diseño único que complementa cualquier look casual o moderno. ', ['images/ft-a51-1.jpg', 'images/ft-a51-2.jpg'])">
+                <h3>Ref.059 Vibrante y Chic: Reloj juvenil femenino</h3>
+                <p>Precio: $20,000</p>
+                <button onclick="addToCart('Ref059 Vibrante y Chic: Reloj juvenil femenino', 20000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 52-->
+            <div class="product">
+                <img src="images/ft-a52.jpg" alt="Producto 3" onclick="openProductModal('Reloj Juvenil: Estilo y diversión para tu muñeca', 'Este reloj se convierte en el accesorio ideal para llevar a diario o en ocasiones especiales, aportando un toque de alegría y elegancia a cada momento. ¡Haz del tiempo tu mejor aliado con este reloj juvenil lleno de encanto! ', ['images/ft-a52-1.jpg', 'images/ft-a52-2.jpg'])">
+                <h3>Ref.060 Reloj Juvenil: Estilo y diversión para tu muñeca</h3>
+                <p>Precio: $20,000</p>
+                <button onclick="addToCart('Ref060 Reloj Juvenil: Estilo y diversión para tu muñeca', 20000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 53-->
+            <div class="product">
+                <img src="images/ft-a53.jpg" alt="Producto 3" onclick="openProductModal('Conjunto Amistad Inseparable: Par Aretes + Duo Manillas', 'Juego de aretes + pulseras a juego, perfectos para compartir con tu mejor amiga y lucir un estilo único.', ['images/ft-a53-1.jpg', 'images/ft-a53-2.jpg'])">
+                <h3>Ref.906 Conjunto Amistad Inseparable: Par Aretes + Duo Manillas</h3>
+                <p>Precio: $16,000</p>
+                <button onclick="addToCart('Ref906 Conjunto Amistad Inseparable: Par Aretes + Duo Manillas', 16000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 54-->
+            <div class="product">
+                <img src="images/ft-a54.jpg" alt="Producto 3" onclick="openProductModal('Set de Amistad Chic: Duo Manillas + Juego Aretes ', 'Aretes delicados + pulseras a juego que simbolizan la conexión perfecta entre amigas.', ['images/ft-a54-1.jpg', 'images/ft-a54-2.jpg'])">
+                <h3>Ref.907 Set de Amistad Chic: Duo Manillas + Juego Aretes</h3>
+                <p>Precio: $16,000</p>
+                <button onclick="addToCart('Ref907 Set de Amistad Chic: Duo Manillas + Juego Aretes', 16000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 55-->
+            <div class="product">
+                <img src="images/ft-a55.jpg" alt="Producto 3" onclick="openProductModal('Reloj blanco para un toque especial', 'Ligero y cómodo, es ideal para el uso diario y para mostrar tu estilo único. ¡Dale un toque fresco a tu look con este encantador reloj! ', ['images/ft-a55-1.jpg', 'images/ft-a55-3.jpg'])">
+                <h3>Ref.063 Reloj blanco para un toque especial</h3>
+                <p>Precio: $20,000</p>
+                <button onclick="addToCart('Ref063 Reloj blanco para un toque especial', 20000)">Añadir al carrito</button>
+            </div>
+
+
+
+<!-- Producto 57-->
+            <div class="product">
+                <img src="images/ft-a57.jpg" alt="Producto 3" onclick="openProductModal('Dulzura en Amistad:Juego de aretes rosados + pulseras a juego ', ' Aretes rosados + pulseras diseñados para simbolizar la conexión entre amigas. ¡Un detalle lleno de cariño!', ['images/ft-a57-1.jpg', 'images/ft-a57-2.jpg'])">
+                <h3>Ref.908 Dulzura en Amistad:Juego de aretes rosados + pulseras a juego</h3>
+                <p>Precio: $16,000</p>
+                <button onclick="addToCart('Ref908 Dulzura en Amistad:Juego de aretes rosados + pulseras a juego', 16000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 58-->
+            <div class="product">
+                <img src="images/ft-a58.jpg" alt="Producto 3" onclick="openProductModal('Reloj musical de Sonic con luces', ' Este reloj musical con luces y personajes animados está diseñado para encantar a los más pequeños de la casa. Con sus vibrantes colores, melodías divertidas y luces intermitentes, se convierte en el accesorio perfecto para alegrar su día. ', ['images/ft-a58-2.jpg', 'images/ft-a58-3.jpg'])">
+                <h3>Ref.068 Reloj Animation Sonic </h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref068 Reloj infantil musical con luces.', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 59-->
+            <div class="product">
+                <img src="images/ft-a59.jpg" alt="Producto 3" onclick="openProductModal('Reloj musical de Mario Bross ', ' Este reloj musical con luces y personajes animados está diseñado para encantar a los más pequeños de la casa. Con sus vibrantes colores, melodías divertidas y luces intermitentes, se convierte en el accesorio perfecto para alegrar su día. ', ['images/ft-a59-1.jpg', 'images/ft-a59-3.jpg'])">
+                <h3>Ref.066 Reloj Animation Mario Bross</h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref066 Reloj infantil musical con luces ', 15000)">Añadir al carrito</button>
+            </div> 
+
+<!-- Producto 60-->
+            <div class="product">
+                <img src="images/ft-a60.jpg" alt="Producto 3" onclick="openProductModal('Reloj musical de Iron Man', 'Este reloj musical con luces y personajes animados está diseñado para encantar a los más pequeños de la casa. Con sus vibrantes colores, melodías divertidas y luces intermitentes, se convierte en el accesorio perfecto para alegrar su día.', ['images/ft-a60-2.jpg', 'images/ft-a60-3.jpg'])">
+                <h3>Ref.067 Reloj Animation Iron Man</h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref067 Reloj infantil musical con luces', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 61-->
+            <div class="product">
+                <img src="images/ft-a61.jpg" alt="Producto 3" onclick="openProductModal('Reloj proyector de imagenes de los personajes de Marvel ', 'Este reloj de muñeco con proyector de imágenes es el accesorio perfecto para despertar la imaginación y la diversión de los niños. Con solo presionar un botón, proyecta imágenes de sus personajes favoritos ', ['images/ft-a61-2.jpg', 'images/ft-a61-3.jpg'])">
+                <h3>Ref.069 Reloj animation proyector de imagenes Capitan America </h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref069 Reloj animation  proyector de imagenes ', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 62-->
+            <div class="product">
+                <img src="images/ft-a62.jpg" alt="Producto 3" onclick="openProductModal('Reloj proyector de imangenes de los personajes de Marvel', 'Este reloj de muñeco con proyector de imágenes es el accesorio perfecto para despertar la imaginación y la diversión de los niños. Con solo presionar un botón, proyecta imágenes de sus personajes favoritos', ['images/ft-a62-2.jpg', 'images/ft-a62-3.jpg'])">
+                <h3>Ref.070 Reloj animation proyector de imagenes Hulk</h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref70 Reloj animation proyector de imagenes', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 63-->
+            <div class="product">
+                <img src="images/ft-a63.jpg" alt="Producto 3" onclick="openProductModal('Reloj musical de Unicornio', 'Este reloj musical con luces y personajes animados está diseñado para encantar a los más pequeños de la casa. Con sus vibrantes colores, melodías divertidas y luces intermitentes, se convierte en el accesorio perfecto para alegrar su día ', ['images/ft-a63-1.jpg', 'images/ft-a63-3.jpg'])">
+                <h3>Ref.071 Reloj Animation Unicornio</h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref071 Reloj infantil musical con luces', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 64-->
+            <div class="product">
+                <img src="images/ft-a64.jpg" alt="Producto 3" onclick="openProductModal('Reloj proyector de imagenes de princesas', 'Este reloj de muñeco con proyector de imágenes es el accesorio perfecto para despertar la imaginación y la diversión de los niños. Con solo presionar un botón, proyecta imágenes de sus personajes favoritos', ['images/ft-a64-1.jpg', 'images/ft-a64-3.jpg'])">
+                <h3>Ref.072 Reloj animation proyector de imagenes de Princesa</h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref072 Reloj animation proyector de imagenes', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 65-->
+            <div class="product">
+                <img src="images/ft-a65.jpg" alt="Producto 3" onclick="openProductModal('Reloj Poryector de imagenes de los personajes de Marvel', 'Este reloj de muñeco con proyector de imágenes es el accesorio perfecto para despertar la imaginación y la diversión de los niños. Con solo presionar un botón, proyecta imágenes de sus personajes favoritos', ['images/ft-a65-2.jpg', 'images/ft-a65-3.jpg'])">
+                <h3>Ref.073 Reloj animation proyectos de imagenes de Hulk</h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref073 Reloj proyector de imagenes', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 66-->
+            <div class="product">
+                <img src="images/ft-a66.jpg" alt="Producto 3" onclick="openProductModal('Magia en Tu Muñeca: Reloj de minions con tapa giratoria y luces', 'Su tapa giratoria agrega un toque interactivo y emocionante, mientras las luces brillantes iluminan su diseño, creando un efecto mágico que encanta a primera vista. ', ['images/ft-a66-1.jpg','images/ft-a66-3.jpg'])">
+                <h3>Ref.074 Magia en tu muñeca: Reloj con tapa giratoria y Luces</h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref074 Reloj de minions con tapa giratoria y luces ', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 67-->
+            <div class="product">
+                <img src="images/ft-a67.jpg" alt="Producto 3" onclick="openProductModal('Reloj de Capitan America con tapa giratoria ', 'Su tapa giratoria agrega un toque interactivo y emocionante que iluminan su diseño, creando un efecto mágico que encanta a primera vista.  ', ['images/ft-a67-1.jpg', 'images/ft-a67-2.jpg'])">
+                <h3>Ref.076 Reloj Capitan America con tapa giratoria</h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref076 Reloj de Capitan America ', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 68-->
+            <div class="product">
+                <img src="images/ft-a68.jpg" alt="Producto 3" onclick="openProductModal('Magia en tu muñeca: Reloj de Sonic con tapa giratoria y luces ', 'Su tapa giratoria agrega un toque interactivo y emocionante, mientras las luces brillantes iluminan su diseño, creando un efecto mágico que encanta a primera vista. ', ['images/ft-a68-1.jpg','images/ft-a68-3.jpg'])">
+                <h3>Ref.077 Reloj Sonic con tapa giratoria y luces </h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref077 Reloj de Sonic con tapa giratoria y luces', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 69-->
+            <div class="product">
+                <img src="images/ft-a69.jpg" alt="Producto 3" onclick="openProductModal('Magia en tu muñeca: Reloj de Pony con tapa giratoria y luces', 'Su tapa giratoria agrega un toque interactivo y emocionante, mientras las luces brillantes iluminan su diseño, creando un efecto mágico que encanta a primera vista. ', ['images/ft-a69-1.jpg', 'images/ft-a69-3.jpg'])">
+                <h3>Ref.078 Reloj Pony con tapa  giratoria y luces </h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref078 Reloj de Pony con tapa giratoria y luces', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 70-->
+            <div class="product">
+                <img src="images/ft-a70.jpg" alt="Producto 3" onclick="openProductModal('Magia en tu mulñeca: Reloj de Hulk con tapa giratoria y luces', 'Su tapa giratoria agrega un toque interactivo y emocionante, mientras las luces brillantes iluminan su diseño, creando un efecto mágico que encanta a primera vista. ', ['images/ft-a70-1.jpg','images/ft-a70-3.jpg'])">
+                <h3>Ref.080 Reloj Hulk con tapa giratoria y luces</h3>
+                <p>Precio: $15,000</p>
+                <button onclick="addToCart('Ref080 Reloj de Hulk con tapa giratoria y luces', 15000)">Añadir al carrito</button>
+            </div>
+
+<!-- Producto 72-->
+<div class="product">
+    <img src="images/ft-a72.jpg" alt="Producto 3" onclick="openProductModal('Ancheta Yo Soy Groot', 'Peluche Yo Soy Groot + reloj deportivo + pareja de manillas + mini botella de vino disponible + 5 Und de dulceria disponibles + tarjeta decorativa. ', ['images/ft-a72-1.jpg', 'images/ft-a72-2.jpg',])">
+    <h3>Ref. Ancheta Yo Soy Groot </h3>
+    <p>Precio: $175,000</p>
+    <button onclick="addToCart('Ref073 Ancheta Yo Soy Groot', 175000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 73-->
+<div class="product">
+    <img src="images/ft-a73.jpg" alt="Producto 3" onclick="openProductModal('Ancheta Gallina Pintadita', 'Peluche Gallina Pintadita + conjunto de manillas + juego de aretes + 4Und de dulceria disponibles + mini botella de vino disponible + tarjeta decorativa. ', ['images/ft-a73-1.jpg', 'images/ft-a73-3.jpg'])">
+    <h3>Ref. Ancheta Gallina Pintadita </h3>
+    <p>Precio: $175,000</p>
+    <button onclick="addToCart('Ref073 Ancheta Gallina Pintadita', 175000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 76-->
+<div class="product">
+    <img src="images/ft-a76.jpg" alt="Producto 3" onclick="openProductModal('Ancheta Stitch', 'Peluche Stitch + reloj deportivo + mini botella de vino disponible + 4 Und de dulceria disponibles + 3 rosas artificiales + tarjeta decorativa.', ['images/ft-a76-2.jpg', 'images/ft-a76-3.jpg'])">
+    <h3>Ref. Ancheta Stitch </h3>
+    <p>Precio: $145,000</p>
+    <button onclick="addToCart('Ref076 Ancheta Stitch', 145000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 77-->
+<div class="product">
+    <img src="images/ft-a77.jpg" alt="Producto 3" onclick="openProductModal('Ancheta Stitch Rosa', 'Peluche Stitch Rosa + reloj deportivo + cerveza importada disponible + 4 Und de dulceria disponibles + tarjeta decorativa.  ', ['images/ft-a77-1.jpg', 'images/ft-a77-3.jpg'])">
+    <h3>Ref. Ancheta Stitch Rosa</h3>
+    <p>Precio: $145,000</p>
+    <button onclick="addToCart('Ref077 Ancheta Stitch Rosa', 145000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 78-->
+<div class="product">
+    <img src="images/ft-a78.jpg" alt="Producto 3" onclick="openProductModal('Detalle Llavero Stitch Rosa ', 'Llevalo siempre contigo, kool llavero peluche + chocolatina mediana. ', ['images/ft-a78-2.jpg', 'images/ft-a78-3.jpg'])">
+    <h3>Ref.801 Detalle llavero Stitch Rosa</h3>
+    <p>Precio: $30,000</p>
+    <button onclick="addToCart('Ref801 Detalle Llavero Stitch Rosa', 30000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 79-->
+<div class="product">
+    <img src="images/ft-a79.jpg" alt="Producto 3" onclick="openProductModal('Detalle llavero Pokemon Squirrelfox', 'Llevalo siempre contigo, kool llavero peluche + chocolatina mediana', ['images/ft-a79-1.jpg', 'images/ft-a79-2.jpg'])">
+    <h3>Ref.0 Detalle llavero Pokemon Squirrelfox</h3>
+    <p>Precio: $30,000</p>
+    <button onclick="addToCart('Ref079 Detalle llavero Pokemon Squirrelfox ', 30000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 80-->
+<div class="product">
+    <img src="images/ft-a80.jpg" alt="Producto 3" onclick="openProductModal('Detalle llavero Stitch', 'Llevalo siempre contigo, kool llavero peluche + chocolatina mediana', ['images/ft-a80-1.jpg', 'images/ft-a80-2.jpg'])">
+    <h3>Ref.080 Detalle llavero Stitch</h3>
+    <p>Precio: $30,000</p>
+    <button onclick="addToCart('Ref080 Detalle llavero Stitch', 30000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 81-->
+<div class="product">
+    <img src="images/ft-a81.jpg" alt="Producto 3" onclick="openProductModal('Detalle llavero GARFIELD', 'Llevalo siempre contigo, kool llavero peluche + chocolatina mediana', ['images/ft-a81-1.jpg', 'images/ft-a81-2.jpg'])">
+    <h3>Ref.081 Detalle llavero GARFIELD </h3>
+    <p>Precio: $30,000</p>
+    <button onclick="addToCart('Ref081 Detalle llavero GARFIELD', 30000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 82-->
+<div class="product">
+    <img src="images/ft-a82.jpg" alt="Producto 3" onclick="openProductModal('Detalle llavero Hello Kitty ', 'Llevalo siempre contigo, kool llavero peluche + chocolatina mediana', ['images/ft-a82-1.jpg', 'images/ft-a82-2.jpg'])">
+    <h3>Ref.082 Detalle llavero Hello Kitty </h3>
+    <p>Precio: $30,000</p>
+    <button onclick="addToCart('Ref082 Detalle llavero Hello Kitty ', 30000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 83-->
+<div class="product">
+    <img src="images/ft-a83.jpg" alt="Producto 3" onclick="openProductModal('Oso StylE en Ceràmica', 'Figura de Oso de Cerámica Elegante - Decoración Versátil para Sala de Estar, Entrada y Mueble de TV, No Necesita Energía, Idea de Regalo Perfecto', ['images/ft-a83-1.jpg', 'images/ft-a83-2.jpg'])">
+    <h3>Ref.083 Oso Style en Ceràmica </h3>
+    <p>Precio: $70,000</p>
+    <button onclick="addToCart('Ref083 Oso Style en Ceràmica ', 70000)">Añadir al carrito</button>
+</div> 
+
+<!-- Producto 84-->
+<div class="product">
+    <img src="images/ft-a84.jpg" alt="Producto 3" onclick="openProductModal('Alcancia de Capitan America MARVEL en Ceràmica', 'Caja de Ahorro de Figura Coleccionable de Marvel , Estatua de Ahorro de Dinero Novedosa, Regalo Perfecto!', ['images/ft-a84-1.jpg', 'images/ft-a84-2.jpg'])">
+    <h3>Ref.084 Alcancia de Capitan America MARVEL en Ceràmica </h3>
+    <p>Precio: $80,000</p>
+    <button onclick="addToCart('Ref084 Alcancia de Capitan Americca MARVELen Ceràmica', 80000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 85-->
+<div class="product">
+    <img src="images/ft-a85.jpg" alt="Producto 3" onclick="openProductModal('Oso Style en Ceràmica', 'Figura de Oso de Cerámica Elegante - Decoración Versátil para Sala de Estar, Entrada y Mueble de TV, No Necesita Energía, Idea de Regalo Perfecto.', ['images/ft-a85-1.jpg', 'images/ft-a85-2.jpg'])">
+    <h3>Ref.085 Oso Style en Ceràmica</h3>
+    <p>Precio: $70,000</p>
+    <button onclick="addToCart('Ref085 Oso Style en Ceràmica', 70000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 86-->
+<div class="product">
+    <img src="images/ft-a86.jpg" alt="Producto 3" onclick="openProductModal('Oso Style en Ceràmica', 'Figura de Oso de Cerámica Elegante - Decoración Versátil para Sala de Estar, Entrada y Mueble de TV, No Necesita Energía, Idea de Regalo Perfecto.', ['images/ft-a86-1.jpg', 'images/ft-a86-2.jpg'])">
+    <h3>Ref.086 Oso Style en Ceràmica</h3>
+    <p>Precio: $70,000</p>
+    <button onclick="addToCart('Ref086 Oso Style en Ceràmica', 70000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 87-->
+<div class="product">
+    <img src="images/ft-a87.jpg" alt="Producto 3" onclick="openProductModal('Set Corazón Verde: Juego de Manillas + Diseño Unico de Aretes', 'Aretes en forma de corazón verde combinados con un juego de manillas ajustables en tonos complementarios. Un diseño lleno de estilo y significado para compartir con el amor de tu vida ', ['images/ft-a87-1.jpg', 'images/ft-a87-2.jpg'])">
+    <h3>Ref.909 Set Corazón Verde : Juego de Manillas + Diseño Unico de Aretes </h3>
+    <p>Precio: $16,000</p>
+    <button onclick="addToCart('Ref909 Set Corazón Verde: Juego de Manillas + Diseño Unico de Aretes', 16000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 88-->
+<div class="product">
+    <img src="images/ft-a88.jpg" alt="Producto 3" onclick="openProductModal('Set Elegancia, Manillas en Perlas + Aros de Oreja', 'Aros de Oreja + manillas en perlas que añaden un toque de elegancia a tu look diario.', ['images/ft-a88-1.jpg', 'images/ft-a88-2.jpg'])">
+    <h3>Ref.912 Set Elegancia, Manillas en Perlas + Aros de Oreja </h3>
+    <p>Precio: $20,000</p>
+    <button onclick="addToCart('Ref9012 Set Elegancia, Manillas en Perlas + Aros de Oreja ', 20000)">Añadir al carrito</button>
+</div>
+
+
+
+<!-- Producto 90-->
+<div class="product">
+    <img src="images/ft-a90.jpg" alt="Producto 3" onclick="openProductModal('Conjunto Clásico en Perlas + Juego de Aretes', 'Manillas de perlas + Exclusivos aretes  que combinan tradición y sofisticación. Ideal para cualquier ocasión especial. ', ['images/ft-a90-1.jpg', 'images/ft-a90-2.jpg'])">
+    <h3>Ref.914 Conjunto Clásico en Perlas + Juego de Aretes </h3>
+    <p>Precio: $20,000</p>
+    <button onclick="addToCart('Ref914 Conjunto Clásico en Perlas + Juego de Aretes', 20000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 91-->
+<div class="product">
+    <img src="images/ft-a91.jpg" alt="Producto 3" onclick="openProductModal('Set Chic de Aretes y Manilla', 'Set de aretes y manilla que complementa tu look con elegancia y estilo. Perfecto para cualquier ocasión.', ['images/ft-a91-1.jpg', 'images/ft-a91-2.jpg'])">
+    <h3>Ref.915 Set Chic de Aretes y Manilla</h3>
+    <p>Precio: $20,000</p>
+    <button onclick="addToCart('Ref915 Set Chic de Aretes y Manilla ', 20000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 92-->
+<div class="product">
+    <img src="images/ft-a92.jpg" alt="Producto 3" onclick="openProductModal('Combo Elegante de Aretes', 'Set perfecto de aretes para realzar tu estilo con un toque único. Ideal para cualquier ocasión y fácil de combinar. ¡Hazlo tuyo hoy! ✨', ['images/ft-a92-1.jpg', 'images/ft-a92-2.jpg'])">
+    <h3>Ref.916 Combo Elegante de Aretes</h3>
+    <p>Precio: $20,000</p>
+    <button onclick="addToCart('Ref916 Combo Elegante de Aretes', 20000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 93-->
+<div class="product">
+    <img src="images/ft-a93.jpg" alt="Producto 3" onclick="openProductModal('Combo de Aretes y Collar', 'Un set imprescindible que un diseño moderno y encanto clásico. ¡Luce espectacular! ', ['images/ft-a93-1.jpg', 'images/ft-a93-2.jpg'])">
+    <h3>Ref.917 Combo de Aretes y Collar</h3>
+    <p>Precio: $20,000</p>
+    <button onclick="addToCart('Ref917 Combo de Aretes y Collar', 20000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 94-->
+<div class="product">
+    <img src="images/ft-a94.jpg" alt="Producto 3" onclick="openProductModal('Set Brillo Perfecto Collar Perlas + Aretes A Juego', 'Aretes y collar a juego que destacan tu elegancia en cada momento. ¡Hazlo tuyo hoy!', ['images/ft-a94-1.jpg', 'images/ft-a94-2.jpg'])">
+    <h3>Ref.918 Set Brillo Perfecto Collar Perlas + Aretes A Juego </h3>
+    <p>Precio: $20,000</p>
+    <button onclick="addToCart('Ref918 Set Brillo Perfecto Collar Perlas + Aretes A Juego', 20000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 95-->
+<div class="product">
+    <img src="images/ft-a95.jpg" alt="Producto 3" onclick="openProductModal('Combo de Aretes Variados', 'Un set único con múltiples diseños de aretes para cada estilo y ocasión. Perfecto para renovar tu colección o regalar. ¡Luce diferente cada día!', ['images/ft-a95-1.jpg', 'images/ft-a95-2.jpg'])">
+    <h3>Ref.919 Combo de Aretes Variados</h3>
+    <p>Precio: $20,000</p>
+    <button onclick="addToCart('Ref919 Combo de Aretes Variados', 20000)">Añadir al carrito</button>
+</div> 
+
+<!-- Producto 96-->
+<div class="product">
+    <img src="images/ft-a96.jpg" alt="Producto 3" onclick="openProductModal('Gorra para Mujer con Estilo', 'Moderna, cómoda y versátil, perfecta para complementar tus outfits casuales con un toque único. ', ['images/ft-a96-1.jpg', 'images/ft-a96-2.jpg' , 'images/ft-a96-3.jpg' ])">
+    <h3>Ref.940 Gorra para Mujer con Estilo </h3>
+    <p>Precio: $35,000</p>
+    <button onclick="addToCart('Ref940 Gorra para Mujer con Estilo', 35000)">Añadir al carrito</button>
+</div>
+
+
+
+<!-- Producto 98-->
+<div class="product">
+    <img src="images/ft-a98.jpg" alt="Producto 3" onclick="openProductModal('Gorra para Mujer con Estilo', ' Moderna, cómoda y versátil, perfecta para complementar tus outfits casuales con un toque único. ', ['images/ft-a98-1.jpg', 'images/ft-a98-2.jpg' , 'images/ft-a98-3.jpg'])">
+    <h3>Ref.942 Gorra para Mujer con Estilo</h3>
+    <p>Precio: $25,000</p>
+    <button onclick="addToCart('Ref942 Gorra para Mujer con Estilo', 25000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 99-->
+<div class="product">
+    <img src="images/ft-a99.jpg" alt="Producto 3" onclick="openProductModal('Set Elegante de Aretes y Collar', 'Conjunto armonioso que combina delicadeza y elegancia. Perfecto para complementar tu outfit. ', ['images/ft-a99-1.jpg', 'images/ft-a99-2.jpg'])">
+    <h3>Ref.911 Set Elegante de Aretes y Collar</h3>
+    <p>Precio: $20,000</p>
+    <button onclick="addToCart('Ref911 Set Elegante de Aretes y Collar', 25000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 100-->
+<div class="product">
+    <img src="images/ft-a100.jpg" alt="Producto 3" onclick="openProductModal(' Reloj Led Elegancia y Modernidad', 'Pantalla LED: Brinda una lectura clara y precisa de la hora incluso en condiciones de poca luz..Fabricado con materiales duraderos y cómodos, ideales para el uso diario. ', ['images/ft-a100-1.jpg', 'images/ft-a100-2.jpg'])">
+    <h3>Ref.801 Reloj Led Elegancia y Modernidad </h3>
+    <p>Precio: $25,000</p>
+    <button onclick="addToCart('Ref801 Reloj Led Elegancia y Modernidad', 20000)">Añadir al carrito</button>
+</div>
+
+
+
+<!-- Producto 102-->
+<div class="product">
+    <img src="images/ft-a102.jpg" alt="Producto 3" onclick="openProductModal('Bolso Práctico con Estilo', 'Amplio y funcional, con detalles únicos para llevar todo lo que necesitas con un toque chic ', ['images/ft-a102-1.jpg', 'images/ft-a102-2.jpg', 'images/ft-a102-3.jpg'])">
+    <h3>Ref.934 Bolso Práctico con Estilo </h3>
+    <p>Precio: $38,000</p>
+    <button onclick="addToCart('Ref934 Bolso Práctico con Estilo', 38000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 103-->
+<div class="product">
+    <img src="images/ft-a103.jpg" alt="Producto 3" onclick="openProductModal('Bolso Elegante y Versátil', 'Diseño moderno, perfecto para complementar cualquier outfit. Ideal para el día a día o salidas especiales.', ['images/ft-a103-1.jpg', 'images/ft-a103-2.jpg', 'images/ft-a103-3.jpg'])">
+    <h3>Ref.935 Bolso Elegante y Versátil</h3>
+    <p>Precio: $45,000</p>
+    <button onclick="addToCart('Ref935 Bolso Elegante y Versátil', 45000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 104-->
+<div class="product">
+    <img src="images/ft-a104.jpg" alt="Producto 3" onclick="openProductModal('Bolso Elegante y Versátil', 'Diseño moderno, perfecto para complementar cualquier outfit. Ideal para el día a día o salidas especiales. ', ['images/ft-a104-1.jpg', 'images/ft-a104-2.jpg', 'images/ft-a104-3.jpg'])">
+    <h3>Ref.936 Bolso Elegante y Versátil</h3>
+    <p>Precio: $45,000</p>
+    <button onclick="addToCart('Ref936 Bolso Elegante y Versátil', 45000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 105-->
+<div class="product">
+    <img src="images/ft-a105.jpg" alt="Producto 3" onclick="openProductModal('Bolso Clásico para Mujer', 'Un diseño atemporal que nunca pasa de moda. El complemento perfecto. ', ['images/ft-a105-1.jpg', 'images/ft-a105-2.jpg', 'images/ft-a105-3.jpg'])">
+    <h3>Ref.937 Bolso Clásico para Mujer</h3>
+    <p>Precio: $40,000</p>
+    <button onclick="addToCart('Ref937 Bolso Clásico para Mujer', 40000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 106-->
+<div class="product">
+    <img src="images/ft-a106.jpg" alt="Producto 3" onclick="openProductModal('Bolso Clásico para Mujer', 'Un diseño atemporal que nunca pasa de moda. El complemento perfecto ', ['images/ft-a106-1.jpg', 'images/ft-a106-2.jpg', 'images/ft-a106-3.jpg'])">
+    <h3>Ref.938 Bolso Clásico para Mujer</h3>
+    <p>Precio: $40,000</p>
+    <button onclick="addToCart('Ref938 Bolso Clásico para Mujer', 40000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 107-->
+<div class="product">
+    <img src="images/ft-a107.jpg" alt="Producto 3" onclick="openProductModal('Bolso Casual y Moderno', 'Estilo fresco y práctico, ideal para mujeres dinámicas que buscan lucir siempre bien.', ['images/ft-a107-1.jpg', 'images/ft-a107-2.jpg', 'images/ft-a107-3.jpg'])">
+    <h3>Ref.939 Bolso Casual y Moderno </h3>
+    <p>Precio: $38,000</p>
+    <button onclick="addToCart('Ref939 Bolso Casual y Moderno', 38000)">Añadir al carrito</button>
+</div> 
+
+<!-- Producto 108-->
+<div class="product">
+    <img src="images/ft-a108.jpg" alt="Producto 3" onclick="openProductModal('Reloj Deportivo Unisex', 'Diseño versátil y moderno, perfecto para acompañarte en tus entrenamientos y actividades diarias. Resistente, funcional y con estilo para todos.', ['images/ft-a108-1.jpg','images/ft-a108-3.jpg'])">
+    <h3>Ref.084 Reloj Deportivo Unisex</h3>
+    <p>Precio: $75,000</p>
+    <button onclick="addToCart('Ref084 Reloj Deportivo Unisex', 75000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 109-->
+<div class="product">
+    <img src="images/ft-a109.jpg" alt="Producto 3" onclick="openProductModal('Reloj Deportivo para Mujer', 'Estilo moderno y funcionalidad en un solo accesorio. Ideal para acompañarte en tus entrenamientos y en el día a día con un diseño cómodo y resistente', ['images/ft-a109-1.jpg', 'images/ft-a109-2.jpg'])">
+    <h3>Ref.085 Reloj Deportivo para Mujer"</h3>
+    <p>Precio: $75,000</p>
+    <button onclick="addToCart('Ref085 Reloj Deportivo para Mujer', 75000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a110.jpg" alt="Producto 3" onclick="openProductModal('Reloj Deportivo para Mujer', 'Estilo moderno y funcionalidad en un solo accesorio. Ideal para acompañarte en tus entrenamientos y en el día a día con un diseño cómodo y resistente ', ['images/ft-a110-1.jpg', 'images/ft-a110-2.jpg'])">
+    <h3>Ref.075 Reloj Deportivo para Mujer</h3>
+    <p>Precio: $75,000</p>
+    <button onclick="addToCart('Ref075 Reloj Deportivo para Mujer', 75000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a111.jpg" alt="Producto 3" onclick="openProductModal('Set Elegante: Reloj y Llavero para Mujer', 'Reloj sofisticado con diseño femenino, combinado con un llavero a juego. Perfecto para complementar tu estilo con un toque práctico y elegante.', ['images/ft-a111-1.jpg', 'images/ft-a111-3.jpg'])">
+    <h3>Ref.056 Set Elegante: Reloj y Llavero para Mujer</h3>
+    <p>Precio: $48,000</p>
+    <button onclick="addToCart('Ref056 Set Elegante: Reloj y Llavero para Mujer', 48000)">Añadir al carrito</button>
+</div>
+
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a113.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans! ', ['images/ft-a113-1.jpg', 'images/ft-a113-2.jpg'])">
+    <h3>Ref.920 Combo Marvel y Colombia para Hombre</h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref920 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a114.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans!', ['images/ft-a114-1.jpg', 'images/ft-a114-2.jpg'])">
+    <h3>Ref.921 Combo Marvel y Colombia para Hombre </h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref921 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a115.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans! ', ['images/ft-a115-1.jpg', 'images/ft-a115-2.jpg'])">
+    <h3>Ref.922 Combo Marvel y Colombia para Hombre </h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref922 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a116.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans!', ['images/ft-a116-1.jpg', 'images/ft-a116-2.jpg'])">
+    <h3>Ref.923 Combo Marvel y Colombia para Hombre</h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref923 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a117.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans!', ['images/ft-a117-1.jpg', 'images/ft-a117-2.jpg'])">
+    <h3>Ref.924 Combo Marvel y Colombia para Hombre </h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref924 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a118.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans! ', ['images/ft-a118-1.jpg', 'images/ft-a118-2.jpg'])">
+    <h3>Ref.925 Combo Marvel y Colombia para Hombre </h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref925 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a119.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans! ', ['images/ft-a119-1.jpg', 'images/ft-a119-2.jpg'])">
+    <h3>Ref.926 Combo Marvel y Colombia para Hombre </h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref926 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a120.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans!', ['images/ft-a120-1.jpg', 'images/ft-a120-2.jpg'])">
+    <h3>Ref.927 Combo Marvel y Colombia para Hombre </h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref927 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a121.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans!', ['images/ft-a121-1.jpg', 'images/ft-a121-2.jpg'])">
+    <h3>Ref.928 Combo Marvel y Colombia para Hombre </h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref928 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a122.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans! ', ['images/ft-a122-1.jpg', 'images/ft-a122-2.jpg'])">
+    <h3>Ref.929 Combo Marvel y Colombia para Hombre </h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref929 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a123.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans! ', ['images/ft-a123-1.jpg', 'images/ft-a123-2.jpg'])">
+    <h3>Ref.930 Combo Marvel y Colombia para Hombre </h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref930 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a124.jpg" alt="Producto 3" onclick="openProductModal('Combo Marvel y Colombia para Hombre', 'Set exclusivo de manillas Marvel combinado con una manilla de Colombia, perfectas para resaltar tu estilo y orgullo. ¡Un toque único para los verdaderos fans! ', ['images/ft-a124-1.jpg', 'images/ft-a124-2.jpg'])">
+    <h3>Ref.931 Combo Marvel y Colombia para Hombre</h3>
+    <p>Precio: $18,000</p>
+    <button onclick="addToCart('Ref931 Combo Marvel y Colombia para Hombre', 18000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a125.jpg" alt="Producto 3" onclick="openProductModal('Gorra Deportiva para Hombre', 'Versátil y moderna, combina funcionalidad y moda para acompañarte en tus días activos. ', ['images/ft-a125-1.jpg', 'images/ft-a125-2.jpg', 'images/ft-a125-3.jpg'])">
+    <h3>Ref.943 Gorra Deportiva para Hombre </h3>
+    <p>Precio: $30,000</p>
+    <button onclick="addToCart('Ref943 Gorra Deportiva para Hombre', 30000)">Añadir al carrito</button>
+</div>
+
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a127.jpg" alt="Producto 3" onclick="openProductModal('Gorra de Caballo para Hombre - Estilo Espectacular', 'Diseño impactante con detalles del majestuoso caballo, combinando elegancia y carácter. Perfecta para hombres que buscan destacar con un accesorio auténtico y poderoso', ['images/ft-a127-1.jpg', 'images/ft-a127-2.jpg', 'images/ft-a127-3.jpg'])">
+    <h3>Ref.945 "Gorra de Caballo para Hombre - Estilo Espectacular</h3>
+    <p>Precio: $48,000</p>
+    <button onclick="addToCart('Ref945 Gorra de Caballo para Hombre - Estilo Espectacular', 48000)">Añadir al carrito</button>
+</div>
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a128.jpg" alt="Producto 3" onclick="openProductModal('Gorra Tres Caballos - Fuerza y Estilo', 'Diseño único con la imagen de tres caballos que simbolizan poder, libertad y elegancia. Ideal para quienes aman destacar con autenticidad ', ['images/ft-a128-1.jpg', 'images/ft-a128-2.jpg', 'images/ft-a128-3.jpg'])">
+    <h3>Ref.946 Gorra Tres Caballos - Fuerza y Estilo</h3>
+    <p>Precio: $45,000</p>
+    <button onclick="addToCart('Ref946 Gorra Tres Caballos - Fuerza y Estilo ', 45000)">Añadir al carrito</button>
+</div>
+
+
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a132.jpg" alt="Producto 3" onclick="openProductModal(' Gafas de sol florales Para Niña', 'Diseño encantador en forma de flor, ideal para las pequeñas más coquetas, Combina funcionalidad y un toque dulce, inspiradas en la belleza de las flores. ', ['images/ft-a132-1.jpg', 'images/ft-a132-3.jpg'])">
+    <h3>Ref.802 Gafas de sol florales Para Niña</h3>
+    <p>Precio: $15,000</p>
+    <button onclick="addToCart('Ref802 Gafas de sol florales Para Niña', 15000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a133.jpg" alt="Producto 3" onclick="openProductModal('Gafas De Corazon Para Princesas', 'Lleva un toque de amor y diversiòn  con estas adorables gafas en forma de corazòn. Diseñadas especialmente para niñas, estas gafas vienen con una valaca que las hace aùn màs especiales ', ['images/ft-a133-1.jpg', 'images/ft-a133-2.jpg'])">
+    <h3>Ref.803 Gafas De Corazon Para Princesas</h3>
+    <p>Precio: $15,000</p>
+    <button onclick="addToCart('Ref803 Gafas De Corazon Para Princesas', 15000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a134.jpg" alt="Producto 3" onclick="openProductModal('Gafas De Corazon Para Princesas', 'Lleva un toque de amor y diversiòn  con estas adorables gafas en forma de corazòn. Diseñadas especialmente para niñas, estas gafas vienen con una valaca que las hace aùn màs especiales ', ['images/ft-a134-1.jpg', 'images/ft-a134-3.jpg'])">
+    <h3>Ref.804 Gafas De Corazon Para Princesas</h3>
+    <p>Precio: $15,000</p>
+    <button onclick="addToCart('Ref804 Gafas De Corazon Para Princesas', 15000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a135.jpg" alt="Producto 3" onclick="openProductModal('Gafas Niña Encanto floral en cada mirada ', 'Gafas infantiles en forma de flor, diseñadas con colores vibrantes y una cómoda balaca ajustable. Perfectas para añadir un toque mágico a cualquier día soleado.. ', ['images/ft-a135-2.jpg', 'images/ft-a135-3.jpg'])">
+    <h3>Ref.805 Gafas Niña Encanto floral en cada mirada </h3>
+    <p>Precio: $15,000</p>
+    <button onclick="addToCart('Ref805 Gafas Niña Encanto floral en cada mirada ', 15000)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a136.jpg" alt="Producto 3" onclick="openProductModal('Gorra Sweet Star', 'Cauchos de cabello con osito adorable, manten tu cabello ordenado y divertido con estos practicos y coloridos cauchos de cabello. vienen en un empaque en forma de osito,  Perfecto àra niñas y mujeres jovenes! ', ['images/ft-a136-1.jpg', 'images/ft-a136-2.jpg'])">
+    <h3>Ref.806 Cauchos de cabello con osito adorable </h3>
+    <p>Precio: $4,500</p>
+    <button onclick="addToCart('Ref806 Cauchos de cabello con osito adorable', 4500)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 110-->
+<div class="product">
+    <img src="images/ft-a137.jpg" alt="Producto 3" onclick="openProductModal('Gorra Sweet Star', 'Cauchos de cabello con osito adorable, c manten tu cabello ordenado y divertido con estos practicos y coloridos cauchos de cabello. vienen en un empaque en forma de osito,  Perfecto àra niñas y mujeres jovenes! ', ['images/ft-a137-1.jpg', 'images/ft-a137-2.jpg'])">
+    <h3>Ref.807 Cauchos de cabello con osito adorable</h3>
+    <p>Precio: $4,500</p>
+    <button onclick="addToCart('Ref807 Cauchos de cabello con osito adorable', 4500)">Añadir al carrito</button>
+</div>
+
+<!-- Producto 110-->
+<div class="product">
+<img src="images/ft-a131.jpg" alt="Producto 3" onclick="openProductModal('Gorra Oso Aventura', 'Divertida y cómoda, esta gorra para niño presenta un tierno diseño de oso, perfecta para protegerlo del sol con estilo y dulzura. ', ['images/ft-a131-1.jpg', 'images/ft-a131-3.jpg'])">
+<h3>Ref.949 Gorra Oso Aventura</h3>
+<p>Precio: $20,000</p>
+<button onclick="addToCart('Ref949 Gorra Oso Aventura', 20000)">Añadir al carrito</button>
+</div>
+
+ <!-- Puedes agregar más productos aquí -->
+</section>
+</main>
+
+<!-- Ventana emergente (modal) para los detalles de productos -->
+<div id="product-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeProductModal()">&times;</span>
+        <h2 id="modal-product-name"></h2>
+        <p id="modal-product-description"></p>
+        <div id="modal-product-images"></div>
+    </div>
+</div>
+
+<!-- Ventana emergente para oferta relámpago -->
+    <div id="offer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOfferModal()">&times;</span>
+            <h2>Oferta Relámpago</h2>
+            <p>Descripción de la oferta especial.</p>
+            <div id="offer-images">
+                <img src="images\A1.jpg" alt="Oferta 1">
+                <img src="images\A1.jpg" alt="Oferta 2">
+                <img src="images\A1.jpg" alt="Oferta 2">
+                
+            </div>
+            <div id="offer-cart">
+                <button onclick="addToCart('Oferta 1', 80000)">Añadir Oferta 1 al carrito - $80,000</button>
+               
+                
+                <!-- Añade más botones para ofertas aquí -->
             </div>
         </div>
     </div>
 
-    <div class="photo-gallery">
-        <div class="photo-item">
-            <img src="img/foto1.jpg" alt="Gorra Modelo 1">
-            <p><strong>Gorra Modelo 1</strong></p>
-            <p>Estilo deportivo y cómodo</p>
-            <p><strong>Precio: $14.00</strong></p>
-            <a href="https://wa.me/3044605939?text=Hola,%20quiero%20comprar%20la%20Gorra%20Modelo%201" class="buy-button">Comprar Ahora</a>
-        </div>
-        <!-- 10 nuevas imágenes agregadas -->
-        <div class="photo-item"><img src="img/foto2.jpg" alt="Gorra Modelo 2"><p><strong>Gorra Modelo 2</strong></p><p>Diseño casual y elegante</p><p><strong>Precio: $16.00</strong></p><a href="#" class="buy-button">Comprar Ahora</a></div>
-        <div class="photo-item"><img src="img/foto3.jpg" alt="Gorra Modelo 3"><p><strong>Gorra Modelo 3</strong></p><p>Estilo moderno</p><p><strong>Precio: $18.00</strong></p><a href="#" class="buy-button">Comprar Ahora</a></div>
-        <div class="photo-item"><img src="img/foto4.jpg" alt="Gorra Modelo 4"><p><strong>Gorra Modelo 4</strong></p><p>Diseño único</p><p><strong>Precio: $20.00</strong></p><a href="#" class="buy-button">Comprar Ahora</a></div>
-        <div class="photo-item"><img src="img/foto5.jpg" alt="Gorra Modelo 5"><p><strong>Gorra Modelo 5</strong></p><p>Comodidad premium</p><p><strong>Precio: $22.00</strong></p><a href="#" class="buy-button">Comprar Ahora</a></div>
-        <div class="photo-item"><img src="img/foto6.jpg" alt="Gorra Modelo 6"><p><strong>Gorra Modelo 6</strong></p><p>Diseño elegante</p><p><strong>Precio: $24.00</strong></p><a href="#" class="buy-button">Comprar Ahora</a></div>
-        <div class="photo-item"><img src="img/foto7.jpg" alt="Gorra Modelo 7"><p><strong>Gorra Modelo 7</strong></p><p>Edición especial</p><p><strong>Precio: $26.00</strong></p><a href="#" class="buy-button">Comprar Ahora</a></div>
-        <div class="photo-item"><img src="img/foto8.jpg" alt="Gorra Modelo 8"><p><strong>Gorra Modelo 8</strong></p><p>Clásico y versátil</p><p><strong>Precio: $28.00</strong></p><a href="#" class="buy-button">Comprar Ahora</a></div>
-        <div class="photo-item"><img src="img/foto9.jpg" alt="Gorra Modelo 9"><p><strong>Gorra Modelo 9</strong></p><p>Toque sofisticado</p><p><strong>Precio: $30.00</strong></p><a href="#" class="buy-button">Comprar Ahora</a></div>
-        <div class="photo-item"><img src="img/foto10.jpg" alt="Gorra Modelo 10"><p><strong>Gorra Modelo 10</strong></p><p>Deportivo y resistente</p><p><strong>Precio: $32.00</strong></p><a href="#" class="buy-button">Comprar Ahora</a></div>
+    <!-- Carrito de compras -->
+    <div id="cart" class="cart">
+        <span class="close" onclick="closeCart()">&times;</span>
+        <h2>Carrito de Compras</h2>
+        <div id="cart-items"></div>
+        <div id="cart-total">Total: $0</div>
+        <button id="checkout-btn" onclick="checkout()">Hacer Pedido</button>
+        <button id="clear-cart-btn" onclick="clearCart()">Borrar Carrito</button>
     </div>
-</body>
-</html>
 
-    
-<script>
-    function openSaleModal() {
-        document.getElementById("sale-modal").style.display = "block";
-    }
-    function closeSaleModal() {
-        document.getElementById("sale-modal").style.display = "none";
-    }
-</script>
+    <script>
+        let cart = [];
+        let total = 0;
+
+        // Abrir la ventana modal para productos
+        function openProductModal(name, description, images) {
+            document.getElementById('modal-product-name').innerText = name;
+            document.getElementById('modal-product-description').innerText = description;
+            let modalImages = document.getElementById('modal-product-images');
+            modalImages.innerHTML = '';
+            images.forEach(image => {
+                modalImages.innerHTML += `<img src="${image}" alt="${name}">`;
+            });
+            document.getElementById('product-modal').style.display = 'block';
+        }
+
+        // Cerrar la ventana modal para productos
+        function closeProductModal() {
+            document.getElementById('product-modal').style.display = 'none';
+        }
+
+        // Abrir la ventana modal para oferta relámpago
+        function openOfferModal() {
+            document.getElementById('offer-modal').style.display = 'block';
+        }
+
+        // Cerrar la ventana modal para oferta relámpago
+        function closeOfferModal() {
+            document.getElementById('offer-modal').style.display = 'none';
+        }
+
+        // Abrir el carrito de compras
+        function openCart() {
+            document.getElementById('cart').style.display = 'block';
+            updateCart(); // Actualizar el carrito al abrir
+        }
+
+        // Cerrar el carrito de compras
+        function closeCart() {
+            document.getElementById('cart').style.display = 'none';
+        }
+
+        // Añadir producto al carrito
+        function addToCart(name, price) {
+            let product = cart.find(item => item.name === name);
+            if (product) {
+                product.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            updateCart();
+        }
+
+        // Actualizar el carrito
+        function updateCart() {
+            let cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            total = 0;
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                cartItems.innerHTML += `
+                    <p>
+                        ${item.name} - $${item.price} x ${item.quantity}
+                        <button onclick="decreaseQuantity('${item.name}')">-</button>
+                        <button onclick="increaseQuantity('${item.name}')">+</button>
+                        <button onclick="removeFromCart('${item.name}')">Eliminar</button>
+                    </p>
+                `;
+            });
+            document.getElementById('cart-total').innerText = `Total: $${total}`;
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-count').style.display = cart.length ? 'inline' : 'none';
+        }
+
+        // Aumentar cantidad de un producto
+        function increaseQuantity(productName) {
+            let product = cart.find(item => item.name === productName);
+            if (product) {
+                product.quantity += 1;
+                updateCart();
+            }
+        }
+
+        // Disminuir cantidad de un producto
+        function decreaseQuantity(productName) {
+            let product = cart.find(item => item.name === productName);
+            if (product && product.quantity > 1) {
+                product.quantity -= 1;
+                updateCart();
+            }
+        }
+
+        // Eliminar producto del carrito
+        function removeFromCart(productName) {
+            cart = cart.filter(item => item.name !== productName);
+            updateCart();
+        }
+
+        // Limpiar el carrito
+        function clearCart() {
+            cart = [];
+            updateCart();
+        }
+
+        // Hacer pedido y dirigir a WhatsApp
+        function checkout() {
+            let message = 'Hola, quiero hacer un pedido:\n';
+            cart.forEach(item => {
+                message += `${item.name} - Cantidad: ${item.quantity}\n`;
+            });
+            message += `Total: $${total}`;
+            window.open(`https://wa.me/3044605939?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    </script>
 </body>
 </html>
